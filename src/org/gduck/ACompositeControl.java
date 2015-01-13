@@ -1,4 +1,9 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import java.util.ArrayList;
 
@@ -6,7 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 
 /**
- * 
+ * Implements the Composite pattern for Controls; also propagates
+ * common/shared lifecycle events to its child Controls
  * @author Randy Picolet
  */
 
@@ -14,10 +20,10 @@ public abstract class ACompositeControl<C extends IControl>
 			  extends AControl
 		   implements ICompositeControl<C> {
 
-	// Start with enough room for 10 children...
+	// Start with enough memory for 10 children...
 	private final ArrayList<C> mChildren = new ArrayList<C>(10);
 
-	//	*************   F R A G M E N T   L I F E C Y C L E   **************  //
+	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
 	@Override
 	public void onCreateView(View contextView) {

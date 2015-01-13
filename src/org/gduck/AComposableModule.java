@@ -1,3 +1,8 @@
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
 package org.gduck;
 
 import java.util.ArrayList;
@@ -11,16 +16,16 @@ import android.os.Bundle;
  * @author Randy Picolet
  */
 
-public abstract class AComposableModule 
-	 	extends AControlModule<IComposableModule<?>> 
-	 	implements IComposableModule<IComposableModule<?>> {
+public abstract class AComposableModule<C extends IComposableModule<?>> 
+	 	extends AControlModule<C> 
+	 	implements IComposableModule<C> {
 
 	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		ArrayList<IComposableModule<?>> children = getChildren();
+		ArrayList<C> children = getChildren();
 		int count = children.size();
     	for (int i = 0; i < count; i++)
     		children.get(i).onStart();
@@ -28,7 +33,7 @@ public abstract class AComposableModule
 	@Override
 	public void onResume() {
 		super.onResume();
-		ArrayList<IComposableModule<?>> children = getChildren();
+		ArrayList<C> children = getChildren();
 		int count = children.size();
     	for (int i = 0; i < count; i++)
     		children.get(i).onResume();
@@ -36,7 +41,7 @@ public abstract class AComposableModule
 	@Override
     public void onPause() {
 		super.onPause();
-		ArrayList<IComposableModule<?>> children = getChildren();
+		ArrayList<C> children = getChildren();
 		int count = children.size();
     	for (int i = 0; i < count; i++)
     		children.get(i).onPause();
@@ -44,7 +49,7 @@ public abstract class AComposableModule
 	@Override
     public void onStop() {
 		super.onStop();
-		ArrayList<IComposableModule<?>> children = getChildren();
+		ArrayList<C> children = getChildren();
 		int count = children.size();
     	for (int i = 0; i < count; i++)
     		children.get(i).onStop();
@@ -52,7 +57,7 @@ public abstract class AComposableModule
 	@Override
 	public void onSaveInstanceState(Bundle outBundle) {
 		super.onSaveInstanceState(outBundle);
-		ArrayList<IComposableModule<?>> children = getChildren();
+		ArrayList<C> children = getChildren();
 		int count = children.size();
     	for (int i = 0; i < count; i++)
     		children.get(i).onSaveInstanceState(outBundle);

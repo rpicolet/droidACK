@@ -1,62 +1,90 @@
-/**
- * Control interface for the Android MVC framework
- * 
- * This interface ext, and forms 
- * the basis for Control components within the overall Android 
- * MVC framework by streamlining integration with Activities 
- * and Fragments.
- * 
- * An implementation is assumed to be an inner class of an 
- * Activity or Fragment.  The Activity  or Fragment should 
- * directly delegate to the like-named life-cycle methods 
- * specified below, which cover the necessary events.  
- * 
- * Note that the creation scenarios (and the related life-cycle
- * methods) for Activities and Fragments are different, so the 
- * enclosing Activity or Fragment should delegate to the 
- * appropriate methods as noted.
- * 
- * @author Randy Picolet
- */
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
 
 /**
+ * greenDroid UI Control Kit (gDUCK) is a library supporting an MVC-like 
+ * architectural pattern (also named gDUCK) tailored to Android apps; use 
+ * of the pattern is enabled by the Kit, and vice versa.
+ * <p> 
+ * NOTE: this is an early "developer release" of a work-in-progress.
+ * <p>
+ * The gDUCK pattern borrows much from prior art, so may seem highly similar
+ * to other MVC-based patterns, but it is not exactly like any of them. For 
+ * an excellent discussion of the major MVC variants, see Derek Greer's 
+ * article at: 
+ * {@literal http://aspiringcraftsman.com/2007/08/25/interactive-application-architecture}
+ * <p>
+ * The overall gDUCK framework (pattern plus Kit proper) has three primary 
+ * goals (elaborated below):
+ * - Clear separation of concerns for application compoments
+ * - Flexible Control structures for mapping to/between Models and Views 
+ * - Integrated, explicit management of User and System events
+ * <p>
+ * 		Separation of Concerns
+ * <p>
+ * gDUCK Model components are responsible for managing the domain data (session 
+ * state) and its persistence (record state). gDUCK minimizes Model coupling to 
+ * the requirement that all Models implement the IModel interface to support 
+ * the Observer pattern (with configurable granularity) and commits. AModel 
+ * provides an implementation that can be easily extended by Model classes. If 
+ * extension is not feasible (for example, due to conflicts with the selected 
+ * storage technology), then the Model classes must implement IModel by some 
+ * other means.
+ * <p>
+ * gDUCK View components are responsible for rendering graphic outputs and 
+ * detecting user inputs, which is to say gDUCK simply uses the existing 
+ * Android View class hierarchy. This choice directly enables complete View 
+ * independence via the various Listener interfaces and avoids any View 
+ * extensions. This also means both Models and Views are observed event 
+ * sources, and it is left to gDUCK Controls to observe and react to both as 
+ * needed.
+ * <p>
+ * gDUCK Control components are responsible for handling system lifecycle 
+ * events, managing View-only state and navigation, and 2-way synchronization 
+ * of Model instances and properties with their Views. The bulk of the gDUCK
+ * library is focused on providing these functions. Notably, IControl 
+ * (the base type for all Controls) enforces/enables handling of lifecycle 
+ * events and associate every Control with its View, ICompositeModule provides 
+ * a Composite-pattern container for related Controls, and IMediatorModule manages
+ * 2-way synchronization between a Model instance and one or more Views.
+ * <p>
+ *		Control Structures
+ * <p>
+ * An Android Activity and its (nested) Fragments form an overall tree that 
+ * reflects the corresponding View tree and Fragment sub-trees. gDUCK IManagers 
+ * form a logical tree of Controls within an Activity or Fragment, with an 
+ * IFragmentControlModule as the root.   
+ * <p>
+ * Controls logically depend on their observed Models and/or Views, including 
+ * the instance relationships. In general, interactive apps present views of a 
+ * user-selected subset of the model instances in response to user inputs, but 
+ * the relationship structures differ between the current model selections and 
+ * its views. gDUCK simplifies mapping between of Controls to different Model and View instance 
+ * structures via several mechanisms:
+ * composite pattern
+ * mediator per instance 
+ * use of composite Mediator
+ * Controls which implement the Observer role relative to Model instances and
+ * . s
+ * by first deeming 
+ * an Activity or Fragment to be the logical container for any Controls 
+ * mapped to the Views in the tree defined by its root ViewGroup. Within 
+ * each Activity or Fragment,  
+ * through a 
+ * flexible use of the Composite pattern.   
+ * <p>
+ *		Integrated Event Management
+ * - 
+ * - Integrated management of user and system events via finite state machines, 
+ * 		including the App, Activity, and Fragment life-cycles
  * 
- *  using a pattern of delegating 
- * to .
-
- * and adds the ability to form a tree of 
- * Controls that integrate with Activities and Fragments to
- * simplify life-cycle support.  for their intended 
- * purposes of more flexible control, and integrates it 
- * with .
- *
- * An implementation is assumed to be an Inner Class of an 
- * Activity or Fragment, and is intended to integrate the
- * overall Android life-cycle (itself a well-defined FSM) 
- * with a Control-internal FSM that defines specific behaviors 
- * in the "active" state between onResume() and onPause() 
- * (which corresponds to the "RUNNING" OperationalState 
- * defined by IPauseableStateMachine). 
- *  
- * A standard composite pattern for the Controls themselves
- * is enabled by two abstract implementations; a concrete 
- * Control class should simply extend one of the two:
- * 	- AControlModule implements a "leaf" node 
- * 	- AFragmentHostManager implements a "container" node 
- * 		nesting one or more Fragment Controls 
- * In addition, state transitions are implemented
- * accordingly, using simple transitions for "leaf" Controls 
- * and FragmentTransactions for Composites. 
  * 
- * Both Activity or Fragment Controls can be either leaf
- * or composite, but only Fragments can actually be 
- * nested, so the result is always a tree with a single root 
- * Activity and any number of nested Fragments. The entire 
- * Control tree is then subject to the Android life-cycle, 
- * with each Control node delegating life-cycle calls to its 
- * own current ControlState.
  * 
  * @author Randy Picolet
+ * 
+ * 
  *
  */
-package rpicolet.mvc;
+package org.gduck;

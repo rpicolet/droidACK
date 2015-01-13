@@ -1,4 +1,9 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,73 +11,48 @@ import android.view.View;
 
 /**
  * Common interface for Control components in the MVC Control 
- * framework, organized into four responsibility areas:'
+ * framework, organized into these responsibility areas:'
  * 
- * 		-	Activity Integration
+ * 		-	Lifecycle Integration
  * 		- 	Control Structure
  * 		-	View Management
- * 		- 	Model Mediation
  * 
- * Activity Integration ensures that every concrete Control
- * has direct access to the context Activity and its resources,
- * and provides the hooks needed to streamline implementation 
+ * Lifecycle integration provides the hooks needed to streamline implementation 
  * of the standard Fragment life-cycle callback methods.
  * Control Fragments should directly delegate to the 
  * like-named life-cycle methods specified below.  
  * 
  * Control Structure enables creation, management, and 
  * traversal of both logical and physical hierarchies of 
- * Control instances.
+ * Control instances, ensures that every Control instance
+ * has access to the context Activity and its resources,.
  * 
  * View Management provides the mechanisms needed to populate
  * and access the standard Android View hierarchy without 
- * extending any View classes, and builds on the Activity
+ * extending any View classes, and builds on the Lifecycle
  * Integration mechanisms to persist View-state across the
  * life-cycle, off-loading this responsibility from concrete
  * implementation classes. 
  * 
- * Finally, Model Mediation integrates the Model framework 
- * with both the Activity life-cycle and View management. 
- * Two key methods enable the Control framework:
- *  - syncToModel(): propagate the current Model state to the
- *    				 dependent Controls and Views, and enable
- *					 call-backs from Models and dependent Views
- *  - commitModelChanges(): save any pending Model changes to 
- *  				 the backing store
- *  
  * @author Randy Picolet
  */
 
-public interface IControl extends IComponent, IChildControlListener {
+public interface IControl extends IComponent {
 
-	//	***********   A C T I V I T Y   I N T E G R A T I O N   ************  //
+	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
 	/**
-	 * Get the Fragment containing/providing context for this Control
-	 * 
-	 * @return - context Fragment instance
-	 */
-	public IControlFragment getFragment();
-	
-	/**
-	 * Get the Activity providing context for this Control
-	 * 
-	 * @return - context Activity instance
-	 */
-	public Activity getActivity();
-	
-    /**
-	 * Set this Control's parent in the tree; delegated 
-	 * from Fragment.onCreate()
+	 * Set this Control's parent in the tree; delegates 
+	 * from Activity.onCreate() or Fragment.onCreate()
 	 *
-	 * @param parent - IComposite]Control containing this one;
-	 * 				   null for top-level ControlModules
+	 * @param parent - ICompositeControl containing this one;
+	 * 				   null if this is a RootControlModule
 	 */
     public void onCreate(ICompositeControl<IControl> parent);
 
     /**
- 	 * Set the view to be used by this Control; delegated from 
- 	 * Fragment.onCreateView()
+ 	 * Set the view to be used by this Control; delegates from 
+ 	 * Activity.onCreate() or Fragment.onCreateView()
  	 * 
  	 * @param view - View to be used by the Control;
  	 * 			     may be null
@@ -80,7 +60,7 @@ public interface IControl extends IComponent, IChildControlListener {
     public void onCreateView(View view);
  	
      /**
- 	 * Set the view to be used by this Control; delegated from 
+ 	 * Set the view to be used by this Control; delegates from 
  	 * Fragment.onCreateView()
  	 * 
  	 * @param container - containing View; non-null
@@ -90,7 +70,7 @@ public interface IControl extends IComponent, IChildControlListener {
     public void onCreateView(View container, int resourceId);
  	
     /**
-	 * Delegate from Fragment.onActivityCreated()
+	 * Delegates from Fragment.onActivityCreated()
 	 * 
 	 * @param inBundle - same Bundle instance 
 	 *  				 passed in to Fragment
@@ -98,38 +78,39 @@ public interface IControl extends IComponent, IChildControlListener {
     public void onActivityCreated(Bundle inBundle);
 
     /**
-	 * Delegate from Fragment.onStart() 
+	 * Delegates from Activity.onStart() or Fragment.onStart() 
 	 */
 	public void onStart();
 
     /**
-	 * Delegate from Fragment.onResume() 
+	 * Delegates from Activity.onResume() or Fragment.onResume() 
 	 */
 	public void onResume();
 
 	/**
-	 * Delegate from Fragment.onPause() 
+	 * Delegates from Activity.onPause() or Fragment.onPause() 
 	 */
 	public void onPause();
 
     /**
-	 * Delegate from Fragment.onStop() 
+	 * Delegates from Activity.onStop or Fragment.onStop() 
 	 */
 	public void onStop();
 
-	/**
-	 * Delegate from Fragment.onDestroyView() 
+	/** 
+	 * Delegates from Fragment.onDestroyView() 
 	 */
 	public void onDestroyView();
 
 	/**
-	 * Delegate from Fragment.onDestroy() 
+	 * Delegates from Activity.onDestroy or Fragment.onDestroy() 
 	 */
 	public void onDestroy();
 
 	/**
-	 * Delegate from Fragment.onSaveInstanceState() 
-
+	 * Delegates from Activity.onSaveInstanceState() or
+	 * Fragment.onSaveInstanceState() 
+	 * 
 	 * @param outBundle - same Bundle instance 
 	 *  				  passed in to Fragment
 	 */
@@ -177,27 +158,57 @@ public interface IControl extends IComponent, IChildControlListener {
 	 */
 	public boolean isPaused();
 	
-
 	//	**************   C O N T R O L   S T R U C T U R E   ***************  //
 	
 	/**
-	 * Get the ICompositeControl containing this one
-	 * @return - ICompositeControl, null for top-level (ControlModules)
+	 * Gets the Activity providing context for this Control; if this is
+	 * a Fragment Control, may or may not return a ControlActivity
+	 * 
+	 * @return - context Activity instance; only valid after onAttach()
 	 */
-	public ICompositeControl<IControl> getParent();
+	public Activity getActivity();
 
 	/**
-	 * Get the ControlModule instance containing this one
-	 * @return - IControlModule, null for a ControlModule
+	 * Gets the ControlContext for this Control
+	 * 
+	 * @return - context ControlContext instance; non-null
 	 */
-	public IControlModule getModule();
+	public IControlContext getControlContext();
 	
+	/**
+	 * Gets the ControlActivity for this Control
+	 * 
+	 * @return - context ControlActivity instance; null iff this
+	 * 			 is a Fragment Control and there is no ControlActivity
+	 */
+	public IControlActivity getControlActivity();
+	
+	/**
+	 * Gets the ControlFragment containing/providing context for this Control
+	 * 
+	 * @return - context ControlFragment instance; null iff this is an 
+	 * 			 Activity Control
+	 */
+	public IControlFragment getControlFragment();
+	
+	/**
+	 * Gets the RootControlModule instance containing this Control
+	 * 
+	 * @return - IRootControlModule, null iff this is a RootControlModule
+	 */
+	public IRootControlModule getRootModule();
+
+	/**
+	 * Gets the ICompositeControl containing this one
+	 * 
+	 * @return - ICompositeControl, null iff this is a RootControlModules
+	 */
+	public ICompositeControl<IControl> getParent();
 
 	//	****************   V I E W   M A N A G E M E N T   *****************  //
 	
 	/**
-	 * Get the View used by this Control;
-	 * may be null
+	 * Gets the View used by this Control; may be null
 	 * 
 	 * @return - View instance
 	 */

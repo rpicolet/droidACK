@@ -1,22 +1,26 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import java.util.ArrayList;
 
 import android.os.Bundle;
 
-
 /**
- * Extends ACompositeControl for a simple fixed tree structure by 
- * delegating "active" mode life-cycle calls to all children
+ * Extends ACompositeControl for a simple fixed tree of ComposableModules; 
+ * propagates "active"/"running" mode life-cycle calls to all children
  * 
  * @author Randy Picolet
  */
 
-public abstract class ASimpleTree<C extends IControl> 
-	 extends ACompositeControl<C> 
-	implements IFixedTree<C> {
+public abstract class AControlModule<C extends IComposableModule<?>> 
+	 	extends ACompositeControl<C> 
+	 	implements IControlModule<C> {
 
-	//	***********   A C T I V I T Y   I N T E G R A T I O N   ************  //
+	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
 	@Override
 	public void onStart() {

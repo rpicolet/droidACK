@@ -1,13 +1,20 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 
 /**
- * Shared Model methods for Observer clients 
+ * Shared Model methods for ModelObserver clients 
  * 
  * @author Randy Picolet
  *
  * @param <M> - Model entity type to be observed
- * @param <P> - Enum of Model Property types that can be observed
+ * @param <P> - Enum of Model Property types that can be observed; 
+ * 				Property types are arbitrary conveniences, and can map 
+ * 				directly to many actual fields and/or derived states
  */
 
 public interface IModel<M extends IModel<M, P>, P extends Enum<P>> 
@@ -16,18 +23,18 @@ public interface IModel<M extends IModel<M, P>, P extends Enum<P>>
 	/**
 	 * Add a ModelObserver to those to be notified of property changes
 	 * 
-	 * @param observer - the Observer to add
+	 * @param observer - the ModelObserver to add
 	 * @param property - one of the Model's Property types
 	 */
-	public void addObserver(IObserver<M, P> observer, P property);
+	public void addObserver(IModelObserver<M, P> observer, P property);
 
 	/**
 	 * Remove a ModelObserver from those to be notified of property changes
 	 *  
-	 * @param observer - the Observer to remove
+	 * @param observer - the ModelObserver to remove
 	 * @param property - one of the Model's Property types
 	 */
-	public void removeObserver(IObserver<M, P> observer, P property);
+	public void removeObserver(IModelObserver<M, P> observer, P property);
 
 	/**
 	 * Commit pending changes to backing store (i.e. DB 

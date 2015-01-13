@@ -1,4 +1,9 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 public interface IComponent {
 	/**
@@ -8,7 +13,7 @@ public interface IComponent {
 	 */
 	public String getMvcClass();
 	/**
-	 * Get the unique (MVC runtime) instanceID, suitable for functional 
+	 * Get the unique (runtime) instanceID, suitable for functional 
 	 * mappings within a process; not useful _across_ processes/app versions!  
 	 * 
 	 * @return - Component ID

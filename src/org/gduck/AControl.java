@@ -1,6 +1,11 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
 
-import android.support.v4.app.FragmentActivity;
+package org.gduck;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,7 +18,7 @@ public abstract class AControl extends AComponent implements IControl {
 
 	// CompositeControl containing this one 
 	private ICompositeControl<IControl> mParent = null;
-	// View/ViewGroup managed by this Control
+	// View/ViewGroup managed/used by this Control
 	private View mView = null;
 	// Life-cycle method/state flags
 	private boolean mIsCreated = false;
@@ -29,18 +34,8 @@ public abstract class AControl extends AComponent implements IControl {
 	}
 
 	
-	//	***********   A C T I V I T Y   I N T E G R A T I O N   ************  //
+	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
-	@Override
-	public final FragmentActivity getActivity() {
-		return getFragment().getActivity();
-	}
-	@Override
-	public IControlFragment getFragment() {
-		if (DEBUG) 
-			ASSERT_NON_NULL(mParent, "mParent");
-		return mParent.getFragment();
-	}
 	/**
 	 * Call first if overridden or extended with additional parameters
 	 */
@@ -81,7 +76,7 @@ public abstract class AControl extends AComponent implements IControl {
 		if (container != null)
 			view = container.findViewById(resourceId);
 		else
-			view = getFragment().getView().findViewById(resourceId);
+			view = getControlFragment().getView().findViewById(resourceId);
 		if (DEBUG)
 			ASSERT_NON_NULL(view, "view");
 		createView(view);
@@ -229,23 +224,37 @@ public abstract class AControl extends AComponent implements IControl {
 	//	**************   C O N T R O L   S T R U C T U R E   ***************  //
 	
 	@Override
+	public final Activity getActivity() {
+		return getControlFragment().getActivity();
+	}
+	@Override
+	public final IControlContext getControlContext() {
+		IControlFragment ctrlFrag = getControlFragment();
+		return ctrlFrag == null ? getControlActivity() : ctrlFrag;
+	}
+	@Override
+	public IControlActivity getControlActivity() {
+		if (DEBUG) 
+			ASSERT_NON_NULL(mParent, "mParent");
+		return mParent.getControlActivity();
+	}
+	@Override
+	public IControlFragment getControlFragment() {
+		if (DEBUG) 
+			ASSERT_NON_NULL(mParent, "mParent");
+		return mParent.getControlFragment();
+	}
+	@Override
+	public final IRootControlModule getRootModule() {
+		
+		return getControlFragment().getRootControlModule();
+	}
+	@Override
 	public final ICompositeControl<IControl> getParent() {
 		if (DEBUG) 
 			ASSERT(!(mParent == null && !IControlModule.class.isInstance(this)), 
 				"null mParent!");
 		return mParent;
-	}
-	@Override
-	public final IControlModule getModule() {
-		return getFragment().getControlModule();
-	}
-	/**
-	 * Default implementation, delegates to parent;
-	 * override to intercept as needed
-	 */
-	@Override
-	public void onChildEvent(IControl child, ChildEvent event) {
-		getParent().onChildEvent(this, event);
 	}
 
 	//	****************   V I E W   M A N A G E M E N T   *****************  //

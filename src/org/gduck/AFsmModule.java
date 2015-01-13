@@ -1,27 +1,32 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import android.os.Bundle;
 
-public abstract class AFsmManager<E extends Enum<E>> 
+public abstract class AFsmModule<E extends Enum<E>> 
 			  extends ACompositeControl<IFsmState<E>>
-		   implements IFsmManager<E> {
+		   implements IFsmModule<E> {
 
 	private static final String 
 			STATE_KEY_STUB = Class.class.getName()  + ".FSM_STATE";
 	private String 
-			// Bundle key for saved FSM State
+			// Bundle key for saved FsmState
 			mStateBundleKey = null;
 	private IFsmState<E> 
-			// Default start ViewState (first one added)
+			// Default start FsmState (first one added)
 			mDefaultStartState = null;
 	private IFsmState<E> 
-			// Actual start ViewState
+			// Actual start FsmState
 			mStartState = null;
 	private IFsmState<E> 
-			// Current ViewState
+			// Current FsmState
 			mCurrentState = null;
 	
-	//	***********   A C T I V I T Y   I N T E G R A T I O N   ************  //
+	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
 	@Override
 	public void onActivityCreated(Bundle inBundle) {

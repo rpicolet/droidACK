@@ -1,6 +1,12 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +16,7 @@ import android.view.ViewGroup;
 /**
  * Convenience class for ControlFragments that would otherwise
  * directly extend Fragment; provides life-cycle wrappers and
- * delegation to ControlModule
+ * delegation to the RootControlModule
  * 
  * @author Randy Picolet
  */
@@ -52,7 +58,7 @@ public abstract class AControlFragment extends Fragment
 			mInstanceId = args.getInt(INSTANCE_ID_KEY);
 			mLayoutId = args.getInt(LAYOUT_ID_KEY); 
 		}
-		getControlModule().onCreate(this);
+		getFragmentControlModule().onCreate(this);
 	}
 	@Override
     public View onCreateView(LayoutInflater inflater, 
@@ -66,9 +72,9 @@ public abstract class AControlFragment extends Fragment
 		else if (DEBUG) 
 			Log.i(mTag, "onCreateView(): no layoutId...");
 		if (view != null)
-			getControlModule().onCreateView(view);
+			getRootControlModule().onCreateView(view);
 		else if (container != null)
-			getControlModule().onCreateView(container);
+			getRootControlModule().onCreateView(container);
 		else if (DEBUG)
 			Log.i(mTag, "onCreateView(): no container...");
 		if (DEBUG)
@@ -79,37 +85,37 @@ public abstract class AControlFragment extends Fragment
 	@Override
     public void onActivityCreated(Bundle inBundle) {
     	super.onActivityCreated(inBundle);
-		getControlModule().onActivityCreated(inBundle);
+		getRootControlModule().onActivityCreated(inBundle);
 	}
     @Override
     public void onStart() {
     	super.onStart();
-    	getControlModule().onStart();
+    	getRootControlModule().onStart();
     }	
     @Override
     public void onResume() {
     	super.onResume();
-    	getControlModule().onResume();
+    	getRootControlModule().onResume();
     }	
     @Override
     public void onPause() {
     	super.onPause();
-    	getControlModule().onPause();
+    	getRootControlModule().onPause();
     }	
     @Override
     public void onStop() {
     	super.onStop();
-    	getControlModule().onStop();
+    	getRootControlModule().onStop();
     }	
     @Override
     public void onDestroyView() {
     	super.onDestroyView();
-    	getControlModule().onDestroyView();
+    	getRootControlModule().onDestroyView();
     }	
     @Override
     public void onDestroy() {
     	super.onDestroy();
-    	getControlModule().onDestroy();
+    	getRootControlModule().onDestroy();
     }	
 	@Override
 	public void onDetach() {
@@ -121,10 +127,35 @@ public abstract class AControlFragment extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outBundle) {
     	super.onSaveInstanceState(outBundle);
-    	getControlModule().onSaveInstanceState(outBundle);
+    	getRootControlModule().onSaveInstanceState(outBundle);
     }
     
-    // Set the default/static construction arguments; these are
+	public FragmentActivity getFragmentActivity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IControlActivity getControlActivity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Fragment getFragment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IControlFragment getControlFragment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IRootControlModule getRootControlModule() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// Set the default/static construction arguments; these are
     // overridden when an initArgs() Bundle is passed to setArguments()... 
     protected void setDefaultArgs(int instanceId, int layoutId) {
     	mInstanceId = instanceId;

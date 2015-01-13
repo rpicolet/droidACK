@@ -1,9 +1,14 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import rpicolet.mvc.IModel;
+import org.gduck.IModel;
 
 /**
  * Shared implementation for IModel 
@@ -15,9 +20,9 @@ public abstract class AModel<M extends IModel<M, P>, P extends Enum<P>>
 		extends AComponent implements IModel<M, P> {
 	
 	// Property->Observers map
-	private final HashMap<P, CopyOnWriteArrayList<IObserver<M, P>>> 
+	private final HashMap<P, CopyOnWriteArrayList<IModelObserver<M, P>>> 
 			mPropertyObservers =
-					new HashMap<P, CopyOnWriteArrayList<IObserver<M, P>>>();
+					new HashMap<P, CopyOnWriteArrayList<IModelObserver<M, P>>>();
 
 	// Instance storage pending operation flags
 	private boolean 
@@ -26,21 +31,21 @@ public abstract class AModel<M extends IModel<M, P>, P extends Enum<P>>
 			mDeletePending = false;
 	
 	@Override
-	public void addObserver(IObserver<M, P> observer, P property) {
+	public void addObserver(IModelObserver<M, P> observer, P property) {
 		synchronized (mPropertyObservers) {
-			CopyOnWriteArrayList<IObserver<M, P>> observers = 
+			CopyOnWriteArrayList<IModelObserver<M, P>> observers = 
 										mPropertyObservers.get(property);
 			if (observers == null) {
-				observers = new CopyOnWriteArrayList<IObserver<M, P>>();
+				observers = new CopyOnWriteArrayList<IModelObserver<M, P>>();
 				mPropertyObservers.put(property, observers);
 			}
 			observers.add(observer);
 		}
 	}
 	@Override
-	public void removeObserver(IObserver<M, P> observer, P property) {
+	public void removeObserver(IModelObserver<M, P> observer, P property) {
 		synchronized (mPropertyObservers) {
-			CopyOnWriteArrayList<IObserver<M, P>> observers = 
+			CopyOnWriteArrayList<IModelObserver<M, P>> observers = 
 										mPropertyObservers.get(property);
 			if (observers == null) return;
 			observers.remove(observer);
@@ -73,16 +78,16 @@ public abstract class AModel<M extends IModel<M, P>, P extends Enum<P>>
 	 * 		changes	they themselves are making; must be added to the 
 	 * 		Model's (e.g. generated) setter method parameters..
 	 */
-	protected void notifyObservers(P property, IObserver<M, P> skipObserver) {
+	protected void notifyObservers(P property, IModelObserver<M, P> skipObserver) {
 		if (DEBUG)
 			if (property == null)
 				logAndThrowNullError("notifyObservers(); property");
-		CopyOnWriteArrayList<IObserver<M, P>> observers;
+		CopyOnWriteArrayList<IModelObserver<M, P>> observers;
 		synchronized (mPropertyObservers) {
 			observers = mPropertyObservers.get(property);
 		}
 		if (observers == null) return;  // No observers for this property...
-		for (IObserver<M, P> observer : observers) {
+		for (IModelObserver<M, P> observer : observers) {
 			if (!observer.equals(skipObserver)) {
 				@SuppressWarnings("unchecked") // Warning is appropriate (!),
 				M changedInstance = (M) this;  // as abuse seems possible...	

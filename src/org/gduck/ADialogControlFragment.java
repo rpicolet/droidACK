@@ -1,4 +1,9 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,6 +11,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +22,8 @@ import android.view.ViewGroup;
  * 
  * @author Randy Picolet
  */
-public abstract class ADialogFragment extends DialogFragment 
-							       implements IDialogFragment{
+public abstract class ADialogControlFragment extends DialogFragment 
+							       implements IDialogControlFragment{
 
 	//	***********   A C T I V I T Y   I N T E G R A T I O N   ************  //
 
@@ -78,20 +85,20 @@ public abstract class ADialogFragment extends DialogFragment
 			mNeutralTextId = args.getInt(NEUTRAL_TEXT_ID_KEY);
 			mPositiveTextId = args.getInt(POSITIVE_TEXT_ID_KEY);
 		}
-		getControlModule().onCreate(this);
+		getFragmentControlModule().onCreate(this);
 	}
 	@Override
 	public Dialog onCreateDialog(Bundle inBundle) {
 		if (mContentLayoutId == 0) {
 			// Not using the AlertDialog
 			setStyle(STYLE_NO_FRAME, 0);
-			mDialog = new Dialog(getActivity(), 
+			mDialog = new Dialog(getFragmentActivity(), 
 					android.R.style.Theme_Holo_Dialog_NoActionBar);
 			return mDialog;
 		}
-	    LayoutInflater inflater = getActivity().getLayoutInflater();
+	    LayoutInflater inflater = getFragmentActivity().getLayoutInflater();
 	    mContentView = inflater.inflate(mContentLayoutId, null);
-	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	    AlertDialog.Builder builder = new AlertDialog.Builder(getFragmentActivity());
 	    builder.setView(mContentView);
 	    if (mTitleTextId != 0) 
 	    	builder.setTitle(mTitleTextId);
@@ -132,45 +139,45 @@ public abstract class ADialogFragment extends DialogFragment
 		if (view == null) {
 			if (DEBUG) 
 				Log.d(mTag, "onCreateView(): no layout...");
-			getControlModule().onCreateView(container);
+			getFragmentControlModule().onCreateView(container);
 		} else
-			getControlModule().onCreateView(view);
+			getFragmentControlModule().onCreateView(view);
     	return view;
 	}
 	@Override
     public void onActivityCreated(Bundle inBundle) {
     	super.onActivityCreated(inBundle);
-		getControlModule().onActivityCreated(inBundle);
+		getFragmentControlModule().onActivityCreated(inBundle);
 	}
     @Override
     public void onStart() {
     	super.onStart();
-    	getControlModule().onStart();
+    	getFragmentControlModule().onStart();
     }	
     @Override
     public void onResume() {
     	super.onResume();
-    	getControlModule().onResume();
+    	getFragmentControlModule().onResume();
     }	
     @Override
     public void onPause() {
     	super.onPause();
-    	getControlModule().onPause();
+    	getFragmentControlModule().onPause();
     }	
     @Override
     public void onStop() {
     	super.onStop();
-    	getControlModule().onStop();
+    	getFragmentControlModule().onStop();
     }	
     @Override
     public void onDestroyView() {
     	super.onDestroyView();
-    	getControlModule().onDestroyView();
+    	getFragmentControlModule().onDestroyView();
     }	
     @Override
     public void onDestroy() {
     	super.onDestroy();
-    	getControlModule().onDestroy();
+    	getFragmentControlModule().onDestroy();
     }	
 	@Override
 	public void onDetach() {
@@ -181,11 +188,36 @@ public abstract class ADialogFragment extends DialogFragment
     @Override
     public void onSaveInstanceState(Bundle outBundle) {
     	super.onSaveInstanceState(outBundle);
-    	getControlModule().onSaveInstanceState(outBundle);
+    	getFragmentControlModule().onSaveInstanceState(outBundle);
     }	
 	
+	public FragmentActivity getFragmentActivity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IControlActivity getControlActivity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Fragment getFragment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IControlFragment getControlFragment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public IRootControlModule getRootControlModule() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
-	public IControlModule getControlModule() {
+	public IFragmentControlModule getFragmentControlModule() {
 		return getDialogControlModule();
 	}
 	@Override

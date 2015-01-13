@@ -1,11 +1,16 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 /**
- * Extends AFsmManager to enable supervising 
+ * Extends AFsmModule to enable supervising 
  * multiple mutually-exclusive Fragment Controls 
  * that share a common ViewGroup host
  * 
@@ -13,8 +18,7 @@ import android.support.v4.app.FragmentTransaction;
  */
 
 public abstract class AFragmentHostManager<E extends Enum<E>> 
-			  extends AFsmManager<E> 
-		   implements IChildFragmentListener {
+			  extends AFsmModule<E> {
 	
 	//	****************   V I E W   M A N A G E M E N T   *****************  //
 	
@@ -29,17 +33,6 @@ public abstract class AFragmentHostManager<E extends Enum<E>>
 
 	protected final IControlFragment getChildFragment() {
 		return mChildFragment;
-	}
-	/**
-	 * Default implementation, delegates to parent, override as needed
-	 */
-	@Override
-	public boolean onChildEvent(Fragment fragment, ChildEvent event) {
-		if (fragment == mChildFragment) { 
-			super.onChildEvent(this, event);
-			return true;
-		}
-		return false;
 	}
 	/**
 	 * Call from onEvent() methods
@@ -86,7 +79,7 @@ public abstract class AFragmentHostManager<E extends Enum<E>>
 	 */
 	@Override
 	protected final void onStart(IFsmState<E> state) {
-		mFragmentManager = getFragment().getChildFragmentManager();
+		mFragmentManager = getControlFragment().getChildFragmentManager();
 		mTransaction = mFragmentManager.beginTransaction();
 		state.onStart();
 		mTransaction.commit();

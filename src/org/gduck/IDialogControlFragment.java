@@ -1,9 +1,14 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import android.app.Dialog;
 import android.os.Bundle;
 
-public interface IDialogFragment extends IControlFragment {
+public interface IDialogControlFragment extends IControlFragment {
 
 	public static final String LAYOUT_ID_KEY = "layoutId";
 	

@@ -1,35 +1,17 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+package org.gduck;
 
-public interface IControlFragment {
 
+public interface IControlFragment extends IControlContext {
+
+	// Paraemeter keys for Fragment creation using initArgs()
 	public static final String INSTANCE_ID_KEY = "instanceId";
 	public static final String LAYOUT_ID_KEY = "layoutId";
 	
-	public FragmentActivity getActivity();
-	public View getView();
-	public IControlModule getControlModule();
-	public FragmentManager getChildFragmentManager();
-
-	public void onAttach(Activity activity);
-	public void onCreate(Bundle inBundle);
-    public View onCreateView(LayoutInflater inflater, 
-			 				 ViewGroup container, 
-			 				 Bundle inBundle);
-    public void onActivityCreated(Bundle inBundle);
-    public void onStart();
-    public void onResume();
-    public void onPause();
-    public void onStop();
-    public void onDestroyView();
-    public void onDestroy();
-    public void onDetach();
-    public void onSaveInstanceState(Bundle outBundle);
+    // Child Control accessors
+    public IFragmentControlModule getFragmentControlModule();
 }

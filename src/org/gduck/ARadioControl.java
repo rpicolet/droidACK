@@ -1,4 +1,9 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -7,7 +12,7 @@ import android.widget.RadioGroup;
 
 public abstract class ARadioControl<E extends Enum<E>> 
 			  extends AControl 
-		   implements IModuleControl, OnClickListener {
+		   implements OnClickListener {
 
 	private View mContainer;	// NOTE: do NOT use a RadioGroup!!
 	private E[] mEnumValues;

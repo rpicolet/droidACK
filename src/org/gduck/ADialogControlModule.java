@@ -1,6 +1,11 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
 
-public abstract class ADialogControlModule extends AControlModule 
+package org.gduck;
+
+public abstract class ADialogControlModule extends AFragmentControlModule 
 							   implements IDialogControlModule {
 	@Override
 	public void onNeutralClick() {

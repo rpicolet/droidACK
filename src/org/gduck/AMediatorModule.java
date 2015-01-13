@@ -1,15 +1,20 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 import java.util.ArrayList;
 
-public abstract class AModelMediator<M extends IModel<M, P>, P extends Enum<P>> 
-			  extends ASimpleTree<IControl> 
-		   implements IModelMediator<M, P> {
+public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>> 
+			  extends AComposableModule<IMediatorModule<?, ?>> 
+		   implements IMediatorModule<M, P> {
 	
 	// Semantic convenience
 	public static final boolean SYNC_ROOT = true;
-	public final IModelMediator<M, P> SKIP_ME = this;
-	public final IModelMediator<M, P> NO_SKIP = null;
+	public final IMediatorModule<M, P> SKIP_ME = this;
+	public final IMediatorModule<M, P> NO_SKIP = null;
 	
 	// Independent sync flag
 	private final boolean mIsSyncRoot;
@@ -18,14 +23,14 @@ public abstract class AModelMediator<M extends IModel<M, P>, P extends Enum<P>>
 	// Mediated Model instance 
 	private M mModel;
 
-	protected AModelMediator() {
+	protected AMediatorModule() {
 		mIsSyncRoot = false;
 	}
-	protected AModelMediator(boolean isSyncRoot) {
+	protected AMediatorModule(boolean isSyncRoot) {
 		mIsSyncRoot = isSyncRoot;
 	}
 	
-	//	***********   A C T I V I T Y   I N T E G R A T I O N   ************  //
+	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 	
 	/**
 	 * Call first if overridden...
@@ -54,11 +59,7 @@ public abstract class AModelMediator<M extends IModel<M, P>, P extends Enum<P>>
 
 	//	****************   M O D E L   M E D I A T I O N   *****************  //
 	
-	@Override
-	public final M getModel() {
-		return mModel;
-	}
-	
+	// IModelObserver
 	/**
 	 * Call first if overridden...
 	 */
@@ -70,11 +71,19 @@ public abstract class AModelMediator<M extends IModel<M, P>, P extends Enum<P>>
 			ASSERT(model == mModel, "invalid model!");
 			ASSERT_NON_NULL(property, "property");
 			ASSERT(isResumed(), "not resumed!");
+			EXIT();
 		}
+	}
+	
+	// IMediatorModule
+	@Override
+	public final M getModel() {
+		return mModel;
 	}
 	/**
 	 * Force update of/return observed model and its mediated views
 	 */
+	@Override
 	public final M syncToModel() {
 		M model = acquireModel();
 		if (model == null) {
@@ -85,12 +94,22 @@ public abstract class AModelMediator<M extends IModel<M, P>, P extends Enum<P>>
 			updateViews();
 		}
 		// Sync child ModelMediators
-		ArrayList<IControl> mdlMediators = getChildren();
+		ArrayList<IMediatorModule<?, ?>> mdlMediators = getChildren();
 		int count = mdlMediators.size();
-		for (int i = 0; i < count; i++) {
-			((AModelMediator<?, ?>) (mdlMediators.get(i))).syncToModel();
-		}
+		for (int i = 0; i < count; i++)
+			mdlMediators.get(i).syncToModel();
 		return model;
+	}
+	@Override
+	public final void commitModelChanges() {
+		if (mModel != null) {
+			mModel.commitChanges();
+			// Commit model changes for child ModelMediators
+			ArrayList<IMediatorModule<?, ?>> mdlMediators = getChildren();
+			int count = mdlMediators.size();
+			for (int i = 0; i < count; i++)
+				mdlMediators.get(i).commitModelChanges();
+		}
 	}
 
 	/**
@@ -158,16 +177,4 @@ public abstract class AModelMediator<M extends IModel<M, P>, P extends Enum<P>>
 	    	mModel = null;
 		}
     }
-	private void commitModelChanges() {
-		if (mModel != null) {
-			mModel.commitChanges();
-			// Commit model changes for child ModelMediators
-			ArrayList<IControl> mdlMediators = getChildren();
-			int count = mdlMediators.size();
-			for (int i = 0; i < count; i++) {
-				((AModelMediator<?, ?>) (mdlMediators.get(i)))
-					.commitModelChanges();
-			}
-		}
-	}
 }

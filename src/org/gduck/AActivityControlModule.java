@@ -1,4 +1,11 @@
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
 package org.gduck;
+
+
 
 /**
  * 
@@ -9,7 +16,7 @@ public abstract class AActivityControlModule
 			  extends AControlModule<IComposableModule<?>>
 		   implements IActivityControlModule {
 
-	// Fragment providing the life-cycle context for this ControlModule
+	// Activity providing the life-cycle context for this ControlModule
 	private IControlActivity mActivity = null;
 
 	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
@@ -34,7 +41,7 @@ public abstract class AActivityControlModule
 	@Override
 	public final IControlActivity getControlActivity() {
 		if (DEBUG)
-			ASSERT_NON_NULL(mActivity, "getFragment(): mFragment");
+			ASSERT_NON_NULL(mActivity, "getControlActivity(): mActivity");
 		return mActivity;
 	}
 	@Override

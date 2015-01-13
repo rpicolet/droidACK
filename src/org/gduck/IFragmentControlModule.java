@@ -1,17 +1,17 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
+
+package org.gduck;
 
 /**
  * 
  * @author Randy Picolet
  */
 
-public interface IControlModule 
-	     extends ICompositeControl<IModuleControl>,
-	     		 IChildFragmentListener {
+public interface IFragmentControlModule 
+	     extends IRootControlModule {
 
 	public void onCreate(IControlFragment fragment);
-	
-	public void addChildFragmentListener(IChildFragmentListener listener);
-	
-	public void removeChildFragmentListener(IChildFragmentListener listener);
 }

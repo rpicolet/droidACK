@@ -1,6 +1,11 @@
-package rpicolet.mvc;
+//
+//	Copyright (c) 2015,  Randy Picolet
+//
+//	This software is covered by the MIT license (see license.txt). 
 
-public interface IObserver<M extends IModel<M, P>, P extends Enum<P>> 
+package org.gduck;
+
+public interface IModelObserver<M extends IModel<M, P>, P extends Enum<P>> 
 		 extends IControl {
 
 	/**
