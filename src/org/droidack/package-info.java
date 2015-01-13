@@ -50,7 +50,7 @@
  * (the base type for all Controls) enforces/enables handling of lifecycle 
  * events and associate every Control with its View, ICompositeModule provides 
  * a Composite-pattern container for related Controls, IMediatorModule manages 
- * 2-way synchronization between a Model instance and one or more Views, and
+ * 2-way synchronization between a Model instance and ony number of Views, and
  * IFsmModule provides a formal state machine for managing View states.
  * <p>
  *		Control Structures
@@ -64,12 +64,12 @@
  * the instance relationships. In general, interactive apps present views of a 
  * user-selected subset of the model instances in response to user inputs, but 
  * the relationship structures differ between the current model selections and 
- * its views. droidACK simplifies mapping between of Controls to different 
- * Model and View instance by enabling assembly of trees of MediatorModules
- * within the each Activity or Fragment that reflect the structure of that 
- * portion of the Model being despalyed in the View. This also enables re-use
- * of "monitor" Mediators that primarily track Model structures rather than
- * properties.
+ * its views. droidACK simplifies mapping of Controls between different 
+ * Model and View instance structures by enabling assembly of trees of 
+ * MediatorModules within the each Activity or Fragment that reflect the 
+ * structure of that portion of the Model being despalyed in the View. This 
+ * also enables re-use of "monitor" Mediators that primarily track Model 
+ * structures rather than properties.
  * <p>
  *		Integrated Event Management
  * <p>
@@ -80,6 +80,19 @@
  * lifecycle events, and is automatically saved and restored via the Android
  * onSaveInstanceState() bundles. Complex View interactions can be factored 
  * into cooperating state machines even across Activity/Fragment boundaries.
+ * <p>
+ * 		Current Status
+ * <p>
+ * droidACK has been used to develop a real-world 2-player 3D-interactive 
+ * game app (as the app has driven the Kit). That's not a lot of experience, 
+ * nonetheless it has been very successful in achieving the above stated goals.
+ * Key areas needing further exploration include integration of/with Adaopters, 
+ * navigational widgets (tabs, for example), and standard navigational events 
+ * (back, up, and such), and use of late binding and/or dependecy injection to
+ * reduce coding. Given the strong separation of Models and Views, droidACK 
+ * could be a good candidate for automated testing using mocks/gateways/stubs. 
+ * More immediately, documentation and examples for the current state of 
+ * affairs are both sorely needed.
  * 
  * @author Randy Picolet
  * 
