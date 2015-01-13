@@ -5,10 +5,12 @@
 
 /**
  * droid Active Control Kit (droidACK) is a library supporting an MVC-like 
- * architectural pattern (also named droidAck) tailored to Android apps; use 
- * of the pattern is enabled by the Kit, and vice versa.
+ * architectural pattern (also named droidAck) tailored to Android apps with 
+ * complex UI behaviors; use of the pattern is enabled by the Kit, and 
+ * vice versa.
  * <p> 
- * NOTE: this is an early "developer release" of a work-in-progress.
+ * NOTE: this is an early "developer release" of a work-in-progress, intended
+ * to solicit feedback and determine whether to pursue further development.
  * <p>
  * The droidACK pattern borrows much from prior art, so may seem highly similar
  * to other MVC-based patterns, but it is not exactly like any of them. For 
@@ -24,14 +26,14 @@
  * <p>
  * 		Separation of Concerns
  * <p>
- * droidACK Model components are responsible for managing the domain data (session 
- * state) and its persistence (record state). droidACK minimizes Model coupling to 
- * the requirement that all Models implement the IModel interface to support 
- * the Observer pattern (with configurable granularity) and commits. AModel 
- * provides an implementation that can be easily extended by Model classes. If 
- * extension is not feasible (for example, due to conflicts with the selected 
- * storage technology), then the Model classes must implement IModel by some 
- * other means.
+ * droidACK Model components are responsible for managing the domain data 
+ * (session state) and its persistence (record state). droidACK minimizes Model
+ * coupling to the requirement that all Models implement the IModel interface 
+ * to support the Observer pattern (with configurable granularity) and commits.
+ * AModel provides an implementation that can be easily extended by Model 
+ * classes. If extension is not feasible (for example, due to conflicts with 
+ * the selected storage technology), then the Model classes must implement 
+ * IModel by some other means.
  * <p>
  * droidACK View components are responsible for rendering graphic outputs and 
  * detecting user inputs, which is to say droidACK simply uses the existing 
@@ -47,38 +49,37 @@
  * library is focused on providing these functions. Notably, IControl 
  * (the base type for all Controls) enforces/enables handling of lifecycle 
  * events and associate every Control with its View, ICompositeModule provides 
- * a Composite-pattern container for related Controls, and IMediatorModule manages
- * 2-way synchronization between a Model instance and one or more Views.
+ * a Composite-pattern container for related Controls, IMediatorModule manages 
+ * 2-way synchronization between a Model instance and one or more Views, and
+ * IFsmModule provides a formal state machine for managing View states.
  * <p>
  *		Control Structures
  * <p>
  * An Android Activity and its (nested) Fragments form an overall tree that 
- * reflects the corresponding View tree and Fragment sub-trees. droidACK IManagers 
- * form a logical tree of Controls within an Activity or Fragment, with an 
- * IFragmentControlModule as the root.   
+ * reflects the corresponding View tree and Fragment sub-trees. droidACK 
+ * IControlModules form a logical tree of Controls within an Activity or 
+ * Fragment, with an IRootControlModule at the top.   
  * <p>
  * Controls logically depend on their observed Models and/or Views, including 
  * the instance relationships. In general, interactive apps present views of a 
  * user-selected subset of the model instances in response to user inputs, but 
  * the relationship structures differ between the current model selections and 
- * its views. droidACK simplifies mapping between of Controls to different Model and View instance 
- * structures via several mechanisms:
- * composite pattern
- * mediator per instance 
- * use of composite Mediator
- * Controls which implement the Observer role relative to Model instances and
- * . s
- * by first deeming 
- * an Activity or Fragment to be the logical container for any Controls 
- * mapped to the Views in the tree defined by its root ViewGroup. Within 
- * each Activity or Fragment,  
- * through a 
- * flexible use of the Composite pattern.   
+ * its views. droidACK simplifies mapping between of Controls to different 
+ * Model and View instance by enabling assembly of trees of MediatorModules
+ * within the each Activity or Fragment that reflect the structure of that 
+ * portion of the Model being despalyed in the View. This also enables re-use
+ * of "monitor" Mediators that primarily track Model structures rather than
+ * properties.
  * <p>
  *		Integrated Event Management
- * - 
- * - Integrated management of user and system events via finite state machines, 
- * 		including the App, Activity, and Fragment life-cycles
+ * <p>
+ * The Control hierarchy in an Activity or Fragment propagates the system 
+ * lifecycle events to every node, and enables as-needed overriding of the 
+ * events in each node, including IFsmModules. The state diagram for a given
+ * FSM is implemented exclusively between the onResume() and onPause() 
+ * lifecycle events, and is automatically saved and restored via the Android
+ * onSaveInstanceState() bundles. Complex View interactions can be factored 
+ * into cooperating state machines even across Activity/Fragment boundaries.
  * 
  * @author Randy Picolet
  * 
