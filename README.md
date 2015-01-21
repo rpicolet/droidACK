@@ -1,7 +1,7 @@
 
 # droid ActiveControls Kit
 
-droid ActiveControls Kit (droidACK) is an Andorid library for apps with complex
+droid ActiveControls Kit (droidACK) is an Android library for apps with complex
 UI behaviors. droidACK enables an MVC-like (Presentation Layer) architectural 
 pattern named ActiveControl (AC), tailored to Android apps; use of the pattern 
 is enabled by the Kit, and vice versa.
