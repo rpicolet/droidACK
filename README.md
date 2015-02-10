@@ -17,7 +17,7 @@ MVC variants, see Derek Greer's article at:
 
 The overall droidACK framework (AC pattern plus Kit proper) has three primary 
 goals:
-- Clear separation of concerns for application compoments
+- Clear separation of concerns for application components
 - Flexible Control structures for mapping to/between Models and Views 
 - Integrated, explicit management (and tracing) of User and System events
 The following sections elaborate these goals and provide an overview of 
@@ -55,7 +55,7 @@ AC organizes Controls as a tree of Composite-pattern ControlModule containers
 that map to one or more Views or View containers, and defines two specific
 variants of the generic base ControlModule:
 - A MediatorModule manages 2-way synchronization between a Model instance and 
-  ony number of Views and/or other Controls, and may nest other MediatorModules 
+  any number of Views and/or other Controls, and may nest other MediatorModules 
   to reflect the Model instance structure; such nested MediatorModules are
   automatically synchronized when any ancestor selection changes.
 - A ViewStateModule provides a formal state machine for control of more complex 
@@ -125,7 +125,7 @@ in achieving the above stated goals. Key areas needing further exploration and
 effort include:
 - Integration of/with Adapters, navigational widgets (tabs, for example), and 
   standard navigational events (back, up, and such)
-- Use of late binding and/or dependecy injection for increased decoupling 
+- Use of late binding and/or dependency injection for increased decoupling 
   between Models, Views, and Controls 
 - Migration to Android Studio
 - Documentation and examples for the current state of affairs. 
