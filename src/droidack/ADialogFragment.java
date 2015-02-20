@@ -207,7 +207,7 @@ public abstract class ADialogFragment extends DialogFragment
 		return getDialogModule();
 	}
 	@Override
-	public IFragmentModule getFragmentModule() {
+	public IFragmentRootModule getFragmentModule() {
 		return getDialogModule();
 	}
 	

@@ -46,7 +46,7 @@ react to both, and provide the appropriate app-specific logic.
 AC Control components are responsible for everything else, including:
 - handling system/context events
 - managing View-only state and navigation, and 
-- 2-way synchronization of Model instances with their Views. 
+- 2-way synchronization of Model instances with their Views.  
 The bulk of the droidACK library is focused on providing these functions.
 
 ##Control Structures
@@ -59,7 +59,7 @@ variants of the generic base ControlModule:
   to reflect the Model instance structure; such nested MediatorModules are
   automatically synchronized when any ancestor selection changes.
 - A ViewStateModule provides a formal state machine for control of more complex 
-  View behaviors.
+  View behaviors.  
 Most use case/control logic can (and should) be directly implemented using 
 appropriate cooperation and communication between these basic ControlModule
 types.
@@ -94,7 +94,7 @@ integrated handling of those events, as follows:
    `IMediatorModule` and their abstract implementations. The events themselves 
    are published as `Property` enums to which `IMediatorModules` can subscribe 
    individually. A `Property` refers to a convenient set of `IModel` state 
-   changes, including instance selections, which are propagated to all 
+   changes. These can include instance selections, which are propagated to all 
    child `IModuleMediators` to coarsely sync `View` updates for all dependent 
    `IModel` instances.
 
@@ -133,5 +133,5 @@ effort include:
 Finally, given its strong separation of Models and Views, the AC/droidACK
 framework seems to be a good candidate for automated testing. 
 
-Copyright (c) 2015,  Randy Picolet
+Copyright (c) 2015, Randy Picolet.  
 Published under the MIT license (see license.txt). 

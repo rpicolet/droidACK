@@ -13,9 +13,9 @@ package droidack;
  * @author Randy Picolet
  */
 
-public abstract class AActivityModule
+public abstract class AActivityRootModule
 			  extends ACompositeModule<IChildModule<?>>
-		   implements IActivityModule {
+		   implements IActivityRootModule {
 
 	// Activity providing the life-cycle context for this ControlModule
 	private IControlActivity mActivity = null;

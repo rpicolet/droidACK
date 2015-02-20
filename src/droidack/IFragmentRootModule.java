@@ -11,7 +11,7 @@ package droidack;
  * @author Randy Picolet
  */
 
-public interface IFragmentModule extends IRootModule {
+public interface IFragmentRootModule extends IRootModule {
 
 	public void onCreate(IControlFragment fragment);
 }

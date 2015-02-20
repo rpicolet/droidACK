@@ -7,11 +7,11 @@
 package droidack;
 
 /**
- * Defines a short simplified name for a general-purpose IChildModule 
+ * Defines a short name for a general-purpose IChildModule 
  * 
  * @author Randy Picolet
  */
 
-public interface IManagerModule 
+public interface ISimpleChildModule 
 		 extends IChildModule<IChildModule<?>> {
 }

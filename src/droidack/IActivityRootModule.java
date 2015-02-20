@@ -10,7 +10,7 @@ package droidack;
  * @author Randy Picolet
  */
 
-public interface IActivityModule extends IRootModule {
+public interface IActivityRootModule extends IRootModule {
 
 	public void onCreate(IControlActivity controlActivity);
 }

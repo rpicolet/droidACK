@@ -16,7 +16,7 @@ public interface IControlFragment extends IControlContext {
 	public static final String LAYOUT_ID_KEY = "layoutId";
 	
     // Child Control accessors
-    public IFragmentModule getFragmentModule();
+    public IFragmentRootModule getFragmentModule();
     
     public View getView();
 }

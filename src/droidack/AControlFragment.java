@@ -137,7 +137,7 @@ public abstract class AControlFragment extends Fragment
 		return getFragmentModule();
 	}
 	@Override
-	public IFragmentModule getFragmentModule() {
+	public IFragmentRootModule getFragmentModule() {
 		// TODO Auto-generated method stub
 		return null;
 	}

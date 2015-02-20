@@ -11,9 +11,9 @@ package droidack;
  * @author Randy Picolet
  */
 
-public abstract class AFragmentModule
+public abstract class AFragmentRootModule
 			  extends ACompositeModule<IChildModule<?>>
-		   implements IFragmentModule {
+		   implements IFragmentRootModule {
 
 	// Fragment providing the life-cycle context for this ControlModule
 	private IControlFragment mFragment = null;

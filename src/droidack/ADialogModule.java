@@ -6,7 +6,7 @@
 
 package droidack;
 
-public abstract class ADialogModule extends AFragmentModule 
+public abstract class ADialogModule extends AFragmentRootModule 
 							   implements IDialogModule {
 	@Override
 	public void onNeutralClick() {
