@@ -80,7 +80,7 @@ public abstract class ADialogFragment extends DialogFragment
 			mNeutralTextId = args.getInt(NEUTRAL_TEXT_ID_KEY);
 			mPositiveTextId = args.getInt(POSITIVE_TEXT_ID_KEY);
 		}
-		getFragmentModule().onCreate(this);
+		getFragmentRootModule().onCreate(this);
 	}
 	@Override
 	public Dialog onCreateDialog(Bundle inBundle) {
@@ -109,7 +109,7 @@ public abstract class ADialogFragment extends DialogFragment
 	    	builder.setNeutralButton(mNeutralTextId, 
 	    			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					getDialogModule().onNeutralClick();
+					getDialogRootModule().onNeutralClick();
 				}
 			});
 	    if (mPositiveTextId == 0)
@@ -117,7 +117,7 @@ public abstract class ADialogFragment extends DialogFragment
     	builder.setPositiveButton(mPositiveTextId, 
     			new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				getDialogModule().onPositiveClick();
+				getDialogRootModule().onPositiveClick();
 			}
 		});
 	    mDialog = builder.create();
@@ -135,50 +135,50 @@ public abstract class ADialogFragment extends DialogFragment
 		if (view == null) {
 			if (DEBUG) 
 				Log.d(mTag, "onCreateView(): no layout...");
-			getFragmentModule().onCreateView(container);
+			getFragmentRootModule().onCreateView(container);
 		} else
-			getFragmentModule().onCreateView(view);
+			getFragmentRootModule().onCreateView(view);
     	return view;
 	}
 	@Override
     public void onActivityCreated(Bundle inBundle) {
     	super.onActivityCreated(inBundle);
-		getFragmentModule().onActivityCreated(inBundle);
+		getFragmentRootModule().onActivityCreated(inBundle);
 	}
     @Override
     public void onStart() {
     	super.onStart();
-    	getFragmentModule().onStart();
+    	getFragmentRootModule().onStart();
     }	
     @Override
     public void onResume() {
     	super.onResume();
-    	getFragmentModule().onResume();
+    	getFragmentRootModule().onResume();
     }	
     @Override
     public void onPause() {
     	super.onPause();
-    	getFragmentModule().onPause();
+    	getFragmentRootModule().onPause();
     }	
     @Override
     public void onStop() {
     	super.onStop();
-    	getFragmentModule().onStop();
+    	getFragmentRootModule().onStop();
     }	
     @Override
     public void onDestroyView() {
     	super.onDestroyView();
-    	getFragmentModule().onDestroyView();
+    	getFragmentRootModule().onDestroyView();
     }	
     @Override
     public void onDestroy() {
     	super.onDestroy();
-    	getFragmentModule().onDestroy();
+    	getFragmentRootModule().onDestroy();
     }	
     @Override
     public void onSaveInstanceState(Bundle outBundle) {
     	super.onSaveInstanceState(outBundle);
-    	getFragmentModule().onSaveInstanceState(outBundle);
+    	getFragmentRootModule().onSaveInstanceState(outBundle);
     }	
 
 	//	***************   D I S M I S S   L I S T E N E R   ****************  //
@@ -204,11 +204,11 @@ public abstract class ADialogFragment extends DialogFragment
 	}
     @Override
 	public IRootModule getRootModule() {
-		return getDialogModule();
+		return getDialogRootModule();
 	}
 	@Override
-	public IFragmentRootModule getFragmentModule() {
-		return getDialogModule();
+	public IFragmentRootModule getFragmentRootModule() {
+		return getDialogRootModule();
 	}
 	
 	// Call from child's onCreate() to build a standard AlertDialog

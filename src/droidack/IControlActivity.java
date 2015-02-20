@@ -9,5 +9,5 @@ package droidack;
 
 public interface IControlActivity extends IControlContext {
 
-	public IActivityRootModule getActivityModule();
+	public IActivityRootModule getActivityRootModule();
 }

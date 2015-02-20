@@ -24,6 +24,6 @@ public interface IDialogFragment extends IControlFragment {
 	public static final String POSITIVE_TEXT_ID_KEY = "positiveTextId";
 
 	public Dialog onCreateDialog(Bundle inBundle);
-	public IDialogModule getDialogModule();
+	public IDialogRootModule getDialogRootModule();
 	public void setListener(IDismissListener listener);
 }

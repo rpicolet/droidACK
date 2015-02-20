@@ -7,7 +7,7 @@
 package droidack;
 
 
-public interface IDialogModule extends IFragmentRootModule {
+public interface IDialogRootModule extends IFragmentRootModule {
 	public void onNeutralClick();
 	public void onPositiveClick();
 }

@@ -56,7 +56,7 @@ public abstract class AControlFragment extends Fragment
 			mInstanceId = args.getInt(INSTANCE_ID_KEY);
 			mLayoutId = args.getInt(LAYOUT_ID_KEY); 
 		}
-		getFragmentModule().onCreate(this);
+		getFragmentRootModule().onCreate(this);
 	}
 	@Override
     public View onCreateView(LayoutInflater inflater, 
@@ -134,10 +134,10 @@ public abstract class AControlFragment extends Fragment
 	}
 	@Override
 	public IRootModule getRootModule() {
-		return getFragmentModule();
+		return getFragmentRootModule();
 	}
 	@Override
-	public IFragmentRootModule getFragmentModule() {
+	public IFragmentRootModule getFragmentRootModule() {
 		// TODO Auto-generated method stub
 		return null;
 	}

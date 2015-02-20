@@ -38,7 +38,7 @@ public abstract class AControlActivity extends FragmentActivity
     @Override
     public void onCreate(Bundle inBundle) {
 		super.onCreate(inBundle);
-		getActivityModule().onCreate(this);
+		getActivityRootModule().onCreate(this);
 	}
     @Override
     public void onStart() {
@@ -83,7 +83,7 @@ public abstract class AControlActivity extends FragmentActivity
 	}
 	@Override
 	public IRootModule getRootModule() {
-		return getActivityModule();
+		return getActivityRootModule();
 	}
 	@Override
 	public FragmentManager getChildFragmentManager() {
