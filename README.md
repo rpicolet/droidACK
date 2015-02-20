@@ -20,6 +20,7 @@ goals:
 - Clear separation of concerns for application components
 - Flexible Control structures for mapping to/between Models and Views 
 - Integrated, explicit management (and tracing) of User and System events
+
 The following sections elaborate these goals and provide an overview of 
 the framework implementation.
 
@@ -46,7 +47,8 @@ react to both, and provide the appropriate app-specific logic.
 AC Control components are responsible for everything else, including:
 - handling system/context events
 - managing View-only state and navigation, and 
-- 2-way synchronization of Model instances with their Views.  
+- 2-way synchronization of Model instances with their Views.
+
 The bulk of the droidACK library is focused on providing these functions.
 
 ##Control Structures
@@ -59,10 +61,11 @@ variants of the generic base ControlModule:
   to reflect the Model instance structure; such nested MediatorModules are
   automatically synchronized when any ancestor selection changes.
 - A ViewStateModule provides a formal state machine for control of more complex 
-  View behaviors.  
+  View behaviors.
+  
 Most use case/control logic can (and should) be directly implemented using 
 appropriate cooperation and communication between these basic ControlModule
-types.
+types (via indirect Model updates or direct calls, as appropriate).
 
 This AC Control structure is refined and implemented by droidACK to support 
 the Android environment. Notably, an `Activity` and its (nested) `Fragment`s 
