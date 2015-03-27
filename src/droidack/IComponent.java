@@ -12,7 +12,7 @@ public interface IComponent {
 	 * 
 	 * @return - Component Class name
 	 */
-	public String getAckClass();
+	public String getAckClassName();
 	/**
 	 * Get the unique (runtime) instanceID, suitable for functional 
 	 * mappings within a process; not useful _across_ processes/app versions!  

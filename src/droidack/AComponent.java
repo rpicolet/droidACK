@@ -28,7 +28,7 @@ public abstract class AComponent implements IComponent {
 			// Empty string flag
 			EMPTY = "",
 			// Long class name, sometimes useful for logging
-			ACK_CLASS = Class.class.getName();
+			ACK_CLASS_NAME = Class.class.getName();
 
 	private static int 
 			// Component instance/id counter
@@ -37,16 +37,19 @@ public abstract class AComponent implements IComponent {
 	private final int 
 			// Process-unique Component ID
 			mAckId = sIdCounter++;
+	private final String
+			mDefaultAckTag = this.getClass().getSimpleName() + 
+					"." + Integer.toString(mAckId); 
 	private String 
-			// Class Logging tag, start out with short name 
-			mAckTag = this.getClass().getSimpleName(),
+			// Class Logging tag
+			mAckTag = mDefaultAckTag,
 			// For logging and method tracing...
 			mMethodName = EMPTY;
 
 
 	@Override
-	public final String getAckClass() {
-		return ACK_CLASS;
+	public final String getAckClassName() {
+		return ACK_CLASS_NAME;
 	}
 	@Override
 	public final int getAckId() {
@@ -58,19 +61,11 @@ public abstract class AComponent implements IComponent {
 	}
 	
 	// Child tag customization
-	protected final String setShortAckTag() {
-		return setAckTag(this.getClass().getSimpleName());
+	protected final String getDefaultAckTag() {
+		return mDefaultAckTag;
 	}
-	protected final String setLongAckTag() {
-		return setAckTag(ACK_CLASS);
-	}
-	protected final String setUniqueAckTag() {
-		return setAckTag(this.getClass().getSimpleName() + 
-				"." + Integer.toString(mAckId));
-	}
-	protected final String setAckTag(String mvcTag) {
+	protected final void setAckTag(String mvcTag) {
 		mAckTag = mvcTag;
-		return mAckTag;
 	}
 	
 	//	*******   L O G G I N G   &   E R R O R   H A N D L I N G   ********  //

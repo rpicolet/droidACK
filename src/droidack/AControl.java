@@ -28,13 +28,6 @@ public abstract class AControl extends AComponent implements IControl {
 	private boolean mIsStarted = false;
 	private boolean mIsResumed = false;
 	
-	protected final String setMediumMvcTag() {
-		if (mParent != null)
-			return setAckTag(mParent.getAckTag() + "." + getAckTag());
-		return getAckTag();
-	}
-
-	
 	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
 	/**

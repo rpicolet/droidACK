@@ -86,19 +86,19 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 	 */
 	@Override
 	public final M syncToModel() {
+		// Update observed instance
 		M model = acquireModel();
-		if (model == null) {
+		if (model == null) 
 			unobserveModel();
-			updateViews();
-		} else {
+		else 
 			observeModel(model);
-			updateViews();
-		}
-		// Sync child ModelMediators
-		ArrayList<IMediatorModule<?, ?>> mdlMediators = getChildren();
-		int count = mdlMediators.size();
+		// Update views mediated by this module
+		updateViews();
+		// Sync child MediatorModules
+		ArrayList<IMediatorModule<?, ?>> childModules = getChildren();
+		int count = childModules.size();
 		for (int i = 0; i < count; i++)
-			mdlMediators.get(i).syncToModel();
+			childModules.get(i).syncToModel();
 		return model;
 	}
 	@Override

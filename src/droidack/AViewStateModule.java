@@ -135,7 +135,7 @@ public abstract class AViewStateModule<E extends Enum<E>>
 	}
 	@Override
 	public void onEvent(E event) {
-		if (DEBUG) ENTER_MSG("onEvent");
+		if (DEBUG) ENTER("onEvent");
 		if (mCurrentState == null) {
 			if (DEBUG) {
 				ASSERT_NON_NULL(null, "mCurrentState");

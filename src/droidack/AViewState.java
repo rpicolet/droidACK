@@ -17,12 +17,7 @@ public abstract class AViewState<E extends Enum<E>>
 	
 	private int 
 			mIndex = -1;
-	
-	public void onCreate(IControlModule<IControl> parent) {
-		if (DEBUG) setUniqueAckTag();
-		super.onCreate(parent);
-	}
-	
+		
 	// IViewState - For use by parent FsmManager only
 	@Override
 	public void setIndex(int index) {
