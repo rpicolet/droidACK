@@ -130,7 +130,6 @@ effort include:
   standard navigational events (back, up, and such)
 - Use of late binding and/or dependency injection for increased decoupling 
   between Models, Views, and Controls 
-- Migration to Android Studio
 - Documentation and examples for the current state of affairs. 
 
 Finally, given its strong separation of Models and Views, the AC/droidACK
