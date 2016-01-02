@@ -7,19 +7,26 @@
 package droidack;
 
 /*
- * MVC Debug Configuration
+ * ACK Debug Configuration
  * 
- * 		Global enable/disable for MVC Debug mechanisms
+ * 		Global enables/disables for ACK Debug mechanisms
  */
 public class Debug {
 	private static boolean sEnabled = false;
-	
+	private static boolean sTraceEnabled = false;
+
 	// Call from main activity/app component static{} block 
 	public static void setEnabled(boolean enabled) {
 		sEnabled = enabled;
 	}
-	
+	public static void setTraceEnabled(boolean enabled) {
+		sTraceEnabled = enabled;
+	}
+
 	public static boolean getEnabled() {
 		return sEnabled;
+	}
+	public static boolean getTraceEnabled() {
+		return sTraceEnabled;
 	}
 }

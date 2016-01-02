@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.0"
+    defaultPublishConfig "debug"
 
     defaultConfig {
         minSdkVersion 15
@@ -25,7 +26,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.android.support:support-annotations:22.0.0'
 }

@@ -19,10 +19,10 @@ public abstract class AComponent implements IComponent {
 	//	*****************   I D E N T I F I C A T I O N   ******************  //
 
 	public final static boolean
-			// Primary MVC debug flag
+			// Global ACK debug flag
 			DEBUG 			= Debug.getEnabled(),
 			// Method tracing support
-			TRACE_METHODS 	= true;
+			TRACE_METHODS 	= Debug.getTraceEnabled();
 
 	private static final String
 			// Empty string flag
