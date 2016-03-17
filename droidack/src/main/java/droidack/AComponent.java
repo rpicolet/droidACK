@@ -1,7 +1,7 @@
 /*
  *	Copyright (c) 2015,  Randy Picolet
  *
- *	This software is covered by the MIT license (see license.txt). 
+ *	This software is covered by the MIT license (see license.txt).
  */
 
 package droidack;
@@ -10,7 +10,7 @@ import android.util.Log;
 
 /**
  * Base class for ACK components
- * 
+ *
  * @author Randy Picolet
  */
 
@@ -30,17 +30,17 @@ public abstract class AComponent implements IComponent {
 			// Long class name, sometimes useful for logging
 			ACK_CLASS_NAME = Class.class.getName();
 
-	private static int 
+	private static int
 			// Component instance/id counter
 			sIdCounter = 0;
-	
-	private final int 
+
+	private final int
 			// Process-unique Component ID
 			mAckId = sIdCounter++;
 	private final String
-			mDefaultAckTag = this.getClass().getSimpleName() + 
-					"." + Integer.toString(mAckId); 
-	private String 
+			mDefaultAckTag = this.getClass().getSimpleName() +
+					"." + Integer.toString(mAckId);
+	private String
 			// Class Logging tag
 			mAckTag = mDefaultAckTag,
 			// For logging and method tracing...
@@ -59,7 +59,7 @@ public abstract class AComponent implements IComponent {
 	public final String getAckTag() {
 		return mAckTag;
 	}
-	
+
 	// Child tag customization
 	protected final String getDefaultAckTag() {
 		return mDefaultAckTag;
@@ -67,7 +67,7 @@ public abstract class AComponent implements IComponent {
 	protected final void setAckTag(String mvcTag) {
 		mAckTag = mvcTag;
 	}
-	
+
 	//	*******   L O G G I N G   &   E R R O R   H A N D L I N G   ********  //
 
 	public final void ENTER(String methodName) {
@@ -96,25 +96,29 @@ public abstract class AComponent implements IComponent {
 			EXIT();
 		}
 	}
-	
+
 	// Assertion support
 	public final void ASSERT(boolean condition, String errMsg) {
 		if (DEBUG)
-			if (!condition) 
+			if (!condition)
 				logAndThrowError(errMsg);
 	}
 	public final void ASSERT_NULL(Object instance, String name) {
 		if (DEBUG)
-			if (instance != null) 
+			if (instance != null)
 				logAndThrowError(name + ": should be null!");
-	} 
+	}
 	public final void ASSERT_NON_NULL(Object instance, String name) {
 		if (DEBUG)
-			if (instance == null) 
+			if (instance == null)
 				logAndThrowNullError(name);
-	} 
+	}
 
 	// Error handlers
+	public final void ERROR(String errMsg) {
+		if (DEBUG)
+			logAndThrowError(errMsg);
+	}
 	public final void logAndThrowNullError(String errorContext) {
 		logAndThrowError(errorContext + ": null reference!");
 	}
@@ -122,7 +126,7 @@ public abstract class AComponent implements IComponent {
 		logE(errMsg);
 		throw new Error(mAckTag + "." + mMethodName + errMsg);
 	}
-	
+
 	// Android Log wrappers
 	public final void logE(String message) {
 		Log.e(mAckTag, mMethodName + message);

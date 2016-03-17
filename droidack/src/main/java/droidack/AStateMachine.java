@@ -8,7 +8,7 @@ package droidack;
 
 /**
  * Base class for a generic utility StateMachine that does not particpate
- * in Activity/Fragment lifecycle or Control events
+ * in Activity/Fragment lifecycle or Control events.
  *
  * Author: Randy Picolet
  */
@@ -50,29 +50,31 @@ public class AStateMachine<E extends Enum<E>> extends AComponent
 				     + " newState: " + newState.getAckTag());
 			*/
         }
-        // Undefine current State during transition
-        AState<E> oldState = mCurrentState;
-        mCurrentState = null;
-        // Do actual transition
-        oldState.onExit();
-        newState.onEnter();
-        // Define new current State
-        mCurrentState = newState;
+        exit();
+        enter(newState);
         if (DEBUG) {
             EXIT();
         }
     }
 
-    protected void setStartState(AState<E> startState) {
+    protected void exit() {
         if (DEBUG) {
-            ENTER(mMethodPrefix + "setStartState");
-            ASSERT_NON_NULL(startState, "startState");
+            ASSERT_NON_NULL(mCurrentState, "mCurrentState");
         }
-        startState.onEnter();
-        mCurrentState = startState; // Current State now defined...
+        // Undefine current State
+        AState<E> currentState = mCurrentState;
+        mCurrentState = null;
+        currentState.onExit();
+    }
+
+    protected void enter(AState<E> state) {
         if (DEBUG) {
-            EXIT();
+            ASSERT_NON_NULL(state, "state");
+            ASSERT_NULL(mCurrentState, "mCurrentState");
         }
+        state.onEnter();
+        mCurrentState = state;
+        // Current State now defined...
     }
 
     protected AState<E> getCurrentState() {

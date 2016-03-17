@@ -25,7 +25,7 @@ public abstract class AState<E extends Enum<E>>
         }
     }
 
-    protected void onEnter() { // May be called from onStart() - UI thread!
+    protected void onEnter() {
         if (DEBUG) {
             ENTER(mMethodPrefix + "onEnter");
             ASSERT(!mIsEntered, "already entered!");
@@ -36,7 +36,7 @@ public abstract class AState<E extends Enum<E>>
         }
     }
 
-    protected void onExit() { // May be called from onStop() - UI thread!
+    protected void onExit() {
         if (DEBUG) {
             ENTER(mMethodPrefix + "onExit");
             ASSERT(mIsEntered, "not entered!");
