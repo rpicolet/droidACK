@@ -7,7 +7,7 @@
 package droidack;
 
 /**
- * Extends/integrates IEventHandler and IChildModule to enable management
+ * Extends/integrates IEventHandler and IControlModule to enable management
  * of multiple mutually-exclusive IViewStates (sharing a common host/root
  * View) as a finite state machine
  *
@@ -15,7 +15,7 @@ package droidack;
  */
 
 public interface IViewStateModule<E extends Enum<E>>
-		 extends IChildModule<IViewState<E>>, IEventHandler<E> {
+		 extends IControlModule<IViewState<E>>, IEventHandler<E> {
 
 	//	****************   V I E W   M A N A G E M E N T   *****************  //
 
@@ -27,7 +27,7 @@ public interface IViewStateModule<E extends Enum<E>>
 	 * @param startState - ViewState to enter in; must have been added
 	 * 					   previously
 	 */
-	public void setStartState(IViewState<E> startState);
+	void setStartState(IViewState<E> startState);
 
 	/**
 	 * For ViewState use only; should only call from ViewState.onEvent()
@@ -35,7 +35,7 @@ public interface IViewStateModule<E extends Enum<E>>
 	 * @param newState - ViewState to switch to; must have been added
 	 * 					 previously
 	 */
-	public void changeState(IViewState<E> newState);
+	void changeState(IViewState<E> newState);
 
 	/**
 	 * Courtesy logging/debug support only; get the currently-active ViewState
@@ -43,5 +43,5 @@ public interface IViewStateModule<E extends Enum<E>>
 	 *
 	 * @return - current ViewState
 	 */
-	public IViewState<E> getCurrentState();
+	IViewState<E> getCurrentState();
 }

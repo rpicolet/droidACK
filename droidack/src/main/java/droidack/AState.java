@@ -69,4 +69,9 @@ public abstract class AState<E extends Enum<E>>
         }
     }
 
+    protected final void logIgnoredEvent(E event) {
+        if (DEBUG) {
+            logI("Ignoring event: " + event);
+        }
+    }
 }

@@ -1,27 +1,27 @@
 /*
  *	Copyright (c) 2015,  Randy Picolet
  *
- *	This software is covered by the MIT license (see license.txt). 
+ *	This software is covered by the MIT license (see license.txt).
  */
 
 package droidack;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>> 
-			  extends ACompositeModule<IMediatorModule<?, ?>> 
+public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
+			  extends ACompositeModule<IMediatorModule<?, ?>>
 		   implements IMediatorModule<M, P> {
-	
+
 	// Semantic convenience
 	public static final boolean SYNC_ROOT = true;
 	public final IMediatorModule<M, P> SKIP_ME = this;
 	public final IMediatorModule<M, P> NO_SKIP = null;
-	
+
 	// Independent sync flag
 	private final boolean mIsSyncRoot;
 	// Properties to observe directly; null OK, empty OK
 	private P[] mProperties;
-	// Mediated Model instance 
+	// Mediated Model instance
 	private M mModel;
 
 	protected AMediatorModule() {
@@ -30,9 +30,9 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 	protected AMediatorModule(boolean isSyncRoot) {
 		mIsSyncRoot = isSyncRoot;
 	}
-	
+
 	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
-	
+
 	/**
 	 * Call first if overridden...
 	 */
@@ -59,7 +59,7 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 	}
 
 	//	****************   M O D E L   M E D I A T I O N   *****************  //
-	
+
 	// IModelObserver
 	/**
 	 * Call first if overridden...
@@ -75,7 +75,7 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 			EXIT();
 		}
 	}
-	
+
 	// IMediatorModule
 	@Override
 	public final M getModel() {
@@ -88,14 +88,14 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 	public final M syncToModel() {
 		// Update observed instance
 		M model = acquireModel();
-		if (model == null) 
+		if (model == null)
 			unobserveModel();
-		else 
+		else
 			observeModel(model);
 		// Update views mediated by this module
 		updateViews();
 		// Sync child MediatorModules
-		ArrayList<IMediatorModule<?, ?>> childModules = getChildren();
+		List<IMediatorModule<?, ?>> childModules = getChildren();
 		int count = childModules.size();
 		for (int i = 0; i < count; i++)
 			childModules.get(i).syncToModel();
@@ -106,7 +106,7 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 		if (mModel != null) {
 			mModel.commitChanges();
 			// Commit model changes for child ModelMediators
-			ArrayList<IMediatorModule<?, ?>> mdlMediators = getChildren();
+			List<IMediatorModule<?, ?>> mdlMediators = getChildren();
 			int count = mdlMediators.size();
 			for (int i = 0; i < count; i++)
 				mdlMediators.get(i).commitModelChanges();
@@ -115,8 +115,8 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 
 	/**
 	 * Call once before onStart() if observing any properties
-	 *  
-	 * @param properties - final (static OK) array of Property 
+	 *
+	 * @param properties - final (static OK) array of Property
 	 * 					enum types to observe; non-null, non-empty
 	 */
 	protected final void setProperties(final P[] properties) {
@@ -139,7 +139,7 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 	}
 	/**
 	 * Find or create the Model instance to be mediated
-	 * 
+	 *
 	 * @return - mediated Model instance
 	 */
 	protected abstract M acquireModel();
@@ -149,11 +149,11 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 	 */
 	protected void updateViews() {
 		if (DEBUG)
-			logD("No view updates...");
+			logV("No view updates...");
 	}
 	/**
 	 * Utility for default case in onChange()
-	 * 
+	 *
 	 * @param property - model Property enum value
 	 */
 	protected final void handleUnexpectedChange(P property) {
@@ -165,14 +165,14 @@ public abstract class AMediatorModule<M extends IModel<M, P>, P extends Enum<P>>
 		if (model != mModel) {
 			unobserveModel();
 			mModel = model;
-	    	if (mModel != null && mProperties != null) 
+	    	if (mModel != null && mProperties != null)
 	    		for (P property : mProperties)
 	   				mModel.addObserver(this, property);
 		}
 	}
     private void unobserveModel() {
-		if (mModel != null) { 
-			if (mProperties != null) 
+		if (mModel != null) {
+			if (mProperties != null)
 				for (P property : mProperties)
 	    			mModel.removeObserver(this, property);
 	    	mModel = null;

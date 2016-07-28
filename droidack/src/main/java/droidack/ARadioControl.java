@@ -1,7 +1,7 @@
 /*
  *	Copyright (c) 2015,  Randy Picolet
  *
- *	This software is covered by the MIT license (see license.txt). 
+ *	This software is covered by the MIT license (see license.txt).
  */
 
 package droidack;
@@ -11,8 +11,8 @@ import android.view.View.OnClickListener;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public abstract class ARadioControl<E extends Enum<E>> 
-			  extends AControl 
+public abstract class ARadioControl<E extends Enum<E>>
+			  extends AControl
 		   implements OnClickListener {
 
 	private E[] mEnumValues;
@@ -21,7 +21,7 @@ public abstract class ARadioControl<E extends Enum<E>>
 	private RadioButton[] mButtons;
 	private int mSelectionIndex = -1;
 
-	protected void onCreate(IControlModule<IControl> parent, 
+	protected void onCreate(IControlModule<IControl> parent,
 			Class<E> valueEnum, int[] buttonIds) {
 		super.onCreate(parent);
 		if (DEBUG) {
@@ -32,15 +32,15 @@ public abstract class ARadioControl<E extends Enum<E>>
 		mValueCount = mEnumValues.length;
 		mButtonIds = buttonIds;
 		if (DEBUG)
-			ASSERT(mButtonIds.length == mValueCount, 
+			ASSERT(mButtonIds.length == mValueCount,
 					"buttonId/enum length mismatch!");
 	}
 	@Override
 	public void onCreateView(View container) {
 		super.onCreateView(container);
-		if (DEBUG) 
-			ASSERT(!(RadioGroup.class.isInstance(container)), 
-					"conflicts with use of RadioGroup!"); 
+		if (DEBUG)
+			ASSERT(!(RadioGroup.class.isInstance(container)),
+					"conflicts with use of RadioGroup!");
 		mButtons = new RadioButton[mButtonIds.length];
 		RadioButton button;
 		for (int i = 0; i < mValueCount; i++ ) {
@@ -57,11 +57,11 @@ public abstract class ARadioControl<E extends Enum<E>>
 		mSelectionIndex = (Integer) view.getTag();
 		if (DEBUG)
 			ASSERT(mButtons[mSelectionIndex] == view, "index/view mismatch!");
-		((RadioButton)view).setChecked(true); 
+		((RadioButton)view).setChecked(true);
 	}
 	// Call after view (buttons) created and before resume...
 	public void setInitialSelection(E initSelection) {
-		if (DEBUG) { 
+		if (DEBUG) {
 			ASSERT_NON_NULL(mButtons, "mButtons");
 			ASSERT_NON_NULL(initSelection, "initSelection");
 		}

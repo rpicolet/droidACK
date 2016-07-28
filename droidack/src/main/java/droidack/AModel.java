@@ -93,7 +93,7 @@ public abstract class AModel<M extends IModel<M, P>, P extends Enum<P>>
 		}
         if (!sIsNotifyEnabled) {
 			if (DEBUG) {
-				logV("notifications disabled: property - " + property);
+				logI("notifications disabled: property - " + property);
 				EXIT();
 			}
             return;

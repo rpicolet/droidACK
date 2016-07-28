@@ -1,7 +1,7 @@
 /*
  *	Copyright (c) 2015,  Randy Picolet
  *
- *	This software is covered by the MIT license (see license.txt). 
+ *	This software is covered by the MIT license (see license.txt).
  */
 
 package droidack;
@@ -12,12 +12,12 @@ import android.support.v4.app.Fragment;
 /**
  * Extends AViewState to represent the use of a shared ViewGroup host for one of
  * several mutually-exclusive nested ControlFragments
- * 
+ *
  * @author Randy Picolet
  */
 
 public abstract class AFragmentHostState<E extends Enum<E>>
-		      extends AViewState<E> 
+		      extends AViewState<E>
 		   implements IFragmentHostState<E> {
 
 	private String mFragmentName;
@@ -33,8 +33,8 @@ public abstract class AFragmentHostState<E extends Enum<E>>
 		this.onCreate(parent, null, 0);
 	}
 	@Override
-	public void onCreate(IControlModule<IControl> parent, 
-						 String fragmentName, 
+	public void onCreate(IControlModule<IControl> parent,
+						 String fragmentName,
 						 int layoutId) {
 		super.onCreate(parent);
 		setHostManager(parent);
@@ -42,9 +42,9 @@ public abstract class AFragmentHostState<E extends Enum<E>>
 		mLayoutId = layoutId;
 	}
 	// For TabState use
-	protected void onCreate(IControlModule<IControl> parent, 
-							String fragmentName, 
-							int layoutId, 
+	protected void onCreate(IControlModule<IControl> parent,
+							String fragmentName,
+							int layoutId,
 							int instanceId) {
 		this.onCreate(parent, fragmentName, layoutId);
 		mInstanceId = instanceId;
@@ -56,12 +56,12 @@ public abstract class AFragmentHostState<E extends Enum<E>>
 	public void onStart() {
 		super.onStart();
 		if (mFragmentName == null) {
-			if (DEBUG) 
+			if (DEBUG)
 				logD("onStart(): no hosted fragment");
 			return;
 		}
     	Bundle args = AControlFragment.initArgs(mInstanceId, mLayoutId);
-		mChildFragment = 
+		mChildFragment =
 				Fragment.instantiate(getActivity(), mFragmentName, args);
 		mHostManager.hostChildFragment(mChildFragment);
 	}

@@ -85,10 +85,12 @@ public abstract class AControlActivity extends FragmentActivity
 
 	//	****************   C O N T R O L   C O N T E X T   *****************  //
 
+	/*
 	@Override
-	public Activity getActivity() {
+	public FragmentActivity getActivity() {
 		return this;
 	}
+	*/
 
 	@Override
 	public Fragment getFragment() {

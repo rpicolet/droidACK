@@ -1,7 +1,7 @@
 /*
  *	Copyright (c) 2015,  Randy Picolet
  *
- *	This software is covered by the MIT license (see license.txt). 
+ *	This software is covered by the MIT license (see license.txt).
  */
 
 package droidack;
@@ -12,12 +12,12 @@ import android.view.View;
 
 /**
  * AControl provides the shared implementations of IControl
- * 
+ *
  * @author Randy Picolet
  */
 public abstract class AControl extends AComponent implements IControl {
 
-	// CompositeControl containing this one 
+	// IControlModule containing this one (if not an IRootModule)
 	private IControlModule<IControl> mParent = null;
 	// View/ViewGroup managed/used by this Control
 	private View mView = null;
@@ -27,7 +27,7 @@ public abstract class AControl extends AComponent implements IControl {
 	private boolean mIsActivityCreated = false;
 	private boolean mIsStarted = false;
 	private boolean mIsResumed = false;
-	
+
 	//	**********   L I F E C Y C L E   I N T E G R A T I O N   ***********  //
 
 	/**
@@ -36,10 +36,13 @@ public abstract class AControl extends AComponent implements IControl {
 	@Override
     public void onCreate(IControlModule<IControl> parent) {
 		if (DEBUG) {
+			//if (parent != null) {
+			//	setAckTag(parent.getAckTag() + "." + getAckTag());
+			//}
 			ENTER_MSG("onCreate");
-			if (mIsCreated) 
+			if (mIsCreated)
 				logW("onCreate(): already called!");
-			ASSERT(!(parent == null && !IRootModule.class.isInstance(this)), 
+			ASSERT(!(parent == null && !IRootModule.class.isInstance(this)),
 					"null parent!");
 		}
 		mParent = parent;
@@ -53,15 +56,15 @@ public abstract class AControl extends AComponent implements IControl {
 		if (DEBUG) EXIT();
 	}
 	/**
-	 * Call to set view if overridden 
+	 * Call to set view if overridden
 	 * (no need to be called first)...
 	 */
 	@Override
     public void onCreateView(View view) {
-		createView(view);
+		setCreatedView(view);
 	}
 	/**
-	 * Call to set view if overridden 
+	 * Call to set view if overridden
 	 * (no need to be called first)...
 	 */
 	@Override
@@ -73,7 +76,7 @@ public abstract class AControl extends AComponent implements IControl {
 			view = getControlContext().getView().findViewById(resourceId);
 		if (DEBUG)
 			ASSERT_NON_NULL(view, "view");
-		createView(view);
+		setCreatedView(view);
 	}
 	/**
 	 * Call first/early if overridden...
@@ -94,11 +97,11 @@ public abstract class AControl extends AComponent implements IControl {
     public void onStart() {
 		if (DEBUG) {
 			ENTER_MSG("onStart");
-			ASSERT(!mIsStarted, "already started!"); 
+			ASSERT(!mIsStarted, "already started!");
 		}
 		mIsStarted = true;
 		if (DEBUG) EXIT();
-    }	
+    }
 	/**
 	 * Call first/early if overridden...
 	 */
@@ -106,11 +109,11 @@ public abstract class AControl extends AComponent implements IControl {
     public void onResume() {
 		if (DEBUG) {
 			ENTER_MSG("onResume");
-			ASSERT(!mIsResumed, "already resumed!"); 
+			ASSERT(!mIsResumed, "already resumed!");
 		}
 		mIsResumed = true;
 		if (DEBUG) EXIT();
-    }	
+    }
 	/**
 	 * Call first/early if overridden...
 	 */
@@ -122,7 +125,7 @@ public abstract class AControl extends AComponent implements IControl {
 		}
 		mIsResumed = false;
 		if (DEBUG) EXIT();
-    }	
+    }
 	/**
 	 * Call first/early if overridden...
 	 */
@@ -135,7 +138,7 @@ public abstract class AControl extends AComponent implements IControl {
 		}
 		mIsStarted = false;
 		if (DEBUG) EXIT();
-    }	
+    }
 	/**
 	 * Call first/early if overridden...
 	 */
@@ -148,7 +151,7 @@ public abstract class AControl extends AComponent implements IControl {
 		mIsViewCreated = false;
 		mView = null;
 		if (DEBUG) EXIT();
-     }	
+     }
 	/**
 	 * Call first/early if overridden...
 	 */
@@ -201,11 +204,11 @@ public abstract class AControl extends AComponent implements IControl {
 	public final boolean isPaused() {
 		return (mIsStarted && !mIsResumed);
 	}
-	private void createView(View view) {
+	private void setCreatedView(View view) {
 		if (DEBUG) {
 			ENTER_MSG("onCreateView");
 			ASSERT(!mIsViewCreated, "already called!");
-			if (view == null) 
+			if (view == null)
 				logD("null view...");
 			//else
 			// logD("viewId = " + view.getId());
@@ -216,7 +219,7 @@ public abstract class AControl extends AComponent implements IControl {
 	}
 
 	//	**************   C O N T R O L   S T R U C T U R E   ***************  //
-	
+
 	@Override
 	public final Activity getActivity() {
 		return getControlFragment().getActivity();
@@ -228,31 +231,31 @@ public abstract class AControl extends AComponent implements IControl {
 	}
 	@Override
 	public IControlActivity getControlActivity() {
-		if (DEBUG) 
+		if (DEBUG)
 			ASSERT_NON_NULL(mParent, "mParent");
 		return mParent.getControlActivity();
 	}
 	@Override
 	public IControlFragment getControlFragment() {
-		if (DEBUG) 
+		if (DEBUG)
 			ASSERT_NON_NULL(mParent, "mParent");
 		return mParent.getControlFragment();
 	}
 	@Override
 	public final IRootModule getRootModule() {
-		
+
 		return getControlFragment().getRootModule();
 	}
 	@Override
 	public final IControlModule<IControl> getParent() {
-		if (DEBUG) 
-			ASSERT(!(mParent == null && !IRootModule.class.isInstance(this)), 
+		if (DEBUG)
+			ASSERT(!(mParent == null && !IRootModule.class.isInstance(this)),
 				"null mParent!");
 		return mParent;
 	}
 
 	//	****************   V I E W   M A N A G E M E N T   *****************  //
-	
+
 	@Override
 	public final View getView() {
 		return mView;
