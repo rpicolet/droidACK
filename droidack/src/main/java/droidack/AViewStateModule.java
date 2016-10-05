@@ -48,8 +48,9 @@ public abstract class AViewStateModule<E extends Enum<E>>
 	@Override
 	public void onStart() {
 		super.onStart();
-		onStart(mStartState);
-		mCurrentState = mStartState; // Current State now defined...
+		IViewState<E> startState = getStartState();
+		onStart(startState);
+		mCurrentState = startState; // Current State now defined...
     }
 
     /**
@@ -88,6 +89,8 @@ public abstract class AViewStateModule<E extends Enum<E>>
 		IViewState<E> stopState = mCurrentState;
 		mCurrentState = null; // Current state now undefined...
 		stopState.onStop();
+		// Start here if activity re-started (i.e. without being re-created)
+		setStartState(stopState);
 	}
 
     /**
@@ -265,7 +268,7 @@ public abstract class AViewStateModule<E extends Enum<E>>
                 }
             }
 		} else if (DEBUG) {
-            logD("enter(bundle): null bundle...");
+            logD("setStartState(bundle): null bundle...");
         }
 		setStartState(restartState != null ? restartState : mDefaultStartState);
 	}

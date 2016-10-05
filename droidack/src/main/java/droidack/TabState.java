@@ -1,7 +1,7 @@
 /*
  *	Copyright (c) 2015,  Randy Picolet
  *
- *	This software is covered by the MIT license (see license.txt). 
+ *	This software is covered by the MIT license (see license.txt).
  */
 
 package droidack;
@@ -10,13 +10,13 @@ package droidack;
 /**
  * TabState control; responsible only for the actual nested
  * ControlFragment; selector buttons are handled by the Manager
- 
+
  * @author Randy Picolet
  *
  * @param <T> - Tab event enum
  */
 
-public class TabState<T extends Enum<T>> 
+public class TabState<T extends Enum<T>>
 			  extends AFragmentHostState<T> {
 
 	private final ATabManager<T> mManager;

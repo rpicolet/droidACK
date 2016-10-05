@@ -1,7 +1,7 @@
 /*
  *	Copyright (c) 2015,  Randy Picolet
  *
- *	This software is covered by the MIT license (see license.txt). 
+ *	This software is covered by the MIT license (see license.txt).
  */
 
 package droidack;
@@ -13,12 +13,12 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 /**
- * 
+ *
  * @author Randy Picolet
  *
  * @param <T> Tab Enum; must include Id() methods!
  */
-public abstract class ATabManager<T extends Enum<T>> 
+public abstract class ATabManager<T extends Enum<T>>
 			  extends AFragmentHostModule<T> {
 
 	private static final int NO_INSTANCE_ID = -1;
@@ -38,25 +38,24 @@ public abstract class ATabManager<T extends Enum<T>>
  	private int mInstanceId;
 	// Tab event Enum
 	private Class<T> mTabEnum;
-	// Event<->State Maps 
-	private final HashMap<T, TabState<T>> mEventToState = 
+	// Event<->State Maps
+	private final HashMap<T, TabState<T>> mEventToState =
 			new HashMap<>();
-	private final HashMap<TabState<T>, T> mStateToEvent = 
+	private final HashMap<TabState<T>, T> mStateToEvent =
 			new HashMap<>();
 	// State->SelectorHelper Map
-	private final HashMap<TabState<T>, SelectorHelper> mStateToHelper = 
+	private final HashMap<TabState<T>, SelectorHelper> mStateToHelper =
 			new HashMap<>();
 
 	protected void onCreate(IControlModule<IControl> parent,
 			 Class<T> tabEnum,
-			 int contentHostId, 
+			 int contentHostId,
 			 int contentHiliteId) {
-		onCreate(parent, tabEnum, contentHostId, contentHiliteId, 
-				NO_INSTANCE_ID);
-	}		
+		onCreate(parent, tabEnum, contentHostId, contentHiliteId, NO_INSTANCE_ID);
+	}
 	protected void onCreate(IControlModule<IControl> parent,
 			 Class<T> tabEnum,
-			 int contentHostId, 
+			 int contentHostId,
 			 int contentHiliteId,
 			 int instanceId) {
 		super.onCreate(parent);
@@ -66,14 +65,14 @@ public abstract class ATabManager<T extends Enum<T>>
 		mInstanceId = instanceId;
 	    for (T tabEvent : mTabEnum.getEnumConstants()) addTab(tabEvent);
 	}
-	
+
 	@Override
 	public void onCreateView(View parent) {
 		super.onCreateView(parent, mContentHostId);
 		mTabContainerView = parent;
-		mContentHilite = 
+		mContentHilite =
 				(ImageView) parent.findViewById(mContentHiliteId);
-    	// Set up each selector using the Helper  
+    	// Set up each selector using the Helper
 		TabState<T> state;
 		SelectorHelper helper;
 		// Note: actual TabHost content is defined in nested Fragment layouts
@@ -103,10 +102,10 @@ public abstract class ATabManager<T extends Enum<T>>
 	public void onEvent(T tabEvent) {
 		TabState<T> oldState = (TabState<T>) getCurrentState();
 		if (!oldState.preValidateEvent(tabEvent)) return;
-		TabState<T> newState = mEventToState.get(tabEvent); 
+		TabState<T> newState = mEventToState.get(tabEvent);
 		// Filter out re-clicks (really should not happen...)
 		if (newState == oldState) return;
-		// Set current selector view as unselected 
+		// Set current selector view as unselected
 		mStateToHelper.get(oldState).setUnselected();
 		// Change the actual tab host content fragment; no back stack
 		changeState(newState, false);
@@ -121,9 +120,9 @@ public abstract class ATabManager<T extends Enum<T>>
 		String fragName = null;
 		try {
 			fragName = (String) mTabEnum.getField(FRAGMENT_NAME).get(tabEvent);
-		} catch (Exception e) { 
-			if (DEBUG) 
-				ASSERT(false, "getFragmentName(): Tab Enum must define a " 
+		} catch (Exception e) {
+			if (DEBUG)
+				ASSERT(false, "getFragmentName(): Tab Enum must define a "
 							  + FRAGMENT_NAME + " field...");
 		}
 		return fragName;
@@ -132,9 +131,9 @@ public abstract class ATabManager<T extends Enum<T>>
 		return mEventToState.get(tab);
 	}
 	private void addTab(T tabEvent) {
-		// Create the State for this TabEvent, using 
+		// Create the State for this TabEvent, using
 		// selectorId for fragment's instanceId
-		int instanceId = mInstanceId == NO_INSTANCE_ID ? 
+		int instanceId = mInstanceId == NO_INSTANCE_ID ?
 				getSelectorId(tabEvent, SELECTOR_ID) : mInstanceId;
 		TabState<T> tabState = new TabState<>(this, instanceId, tabEvent.name());
 	   	// Map Event<->State (both directions) before adding child!
@@ -146,7 +145,7 @@ public abstract class ATabManager<T extends Enum<T>>
 	View getSelectorView(T tabEvent, String enumField) {
 		// Get the viewId
 		int viewId = getSelectorId(tabEvent, enumField);
-		// Get the View whose resource Id (if any) is provided by 
+		// Get the View whose resource Id (if any) is provided by
 		// the given Enum method
 		View view = null;
 		if (viewId != NO_RES_ID) {
@@ -160,9 +159,9 @@ public abstract class ATabManager<T extends Enum<T>>
 		int id = NO_RES_ID;
 		try {
 			id = (Integer) mTabEnum.getField(enumField).get(tabEvent);
-		} catch (Exception e) { 
-			if (DEBUG) 
-				ASSERT(false, "getSelectorId(): Tab Enum must define a " 
+		} catch (Exception e) {
+			if (DEBUG)
+				ASSERT(false, "getSelectorId(): Tab Enum must define a "
 							  + enumField + " field...");
 		}
 		return id;
@@ -174,7 +173,7 @@ public abstract class ATabManager<T extends Enum<T>>
 	private class SelectorHelper {
 		final View mSelector;
 		private final ImageView mSelectorHilite;
-		
+
 		public SelectorHelper(final T tabEvent) {
 			// Set the selector and hilite views
 			mSelector = getSelectorView(tabEvent, SELECTOR_ID);

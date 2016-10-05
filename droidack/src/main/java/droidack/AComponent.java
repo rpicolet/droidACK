@@ -18,6 +18,8 @@ public abstract class AComponent implements IComponent {
 
 	//	*****************   I D E N T I F I C A T I O N   ******************  //
 
+	// Note: Debug.setEnabled() must be called before this class is
+	// loaded, i.e. as a static initializer in the main Activity
 	public final static boolean
 			// Global ACK debug flag
 			DEBUG 			= Debug.getEnabled(),
@@ -137,10 +139,13 @@ public abstract class AComponent implements IComponent {
 	public final void logI(String message) {
 		Log.i(mAckTag, mMethodName + message);
 	}
+	// Filter out D and V messages if not debugging
 	public final void logD(String message) {
-		Log.d(mAckTag, mMethodName + message);
+		if (DEBUG)
+			Log.d(mAckTag, mMethodName + message);
 	}
 	public final void logV(String message) {
-		Log.v(mAckTag, mMethodName + message);
+		if (DEBUG)
+			Log.v(mAckTag, mMethodName + message);
 	}
 }
